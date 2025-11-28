@@ -1,6 +1,11 @@
+"use client";
+
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import { DietaryIcons, type DietaryType } from "@/components/dietary-icons";
+import { ProductModal } from "@/components/product-modal";
+import { useCartStore } from "@/store/cart-store";
 import menuData from "@/data/menu.json";
 
 // Get featured burgers from menu data
@@ -17,6 +22,29 @@ const featuredBurgers = menuData.featuredBurgers
 }>;
 
 export function BurgersSection() {
+  const [selectedProduct, setSelectedProduct] = useState<
+    (typeof featuredBurgers)[0] | null
+  >(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const { addToCart } = useCartStore();
+
+  const handleProductClick = (burger: (typeof featuredBurgers)[0]) => {
+    setSelectedProduct(burger);
+    setIsModalOpen(true);
+  };
+
+  const handleAddToCart = (product: {
+    name: string;
+    price: number;
+    quantity: number;
+    toppings: { name: string; price: number }[];
+  }) => {
+    addToCart(product);
+    setIsModalOpen(false);
+    setSelectedProduct(null);
+  };
+
   return (
     <section className="py-20 bg-gradient-to-b from-primary to-sky-600 relative overflow-hidden">
       {/* Background Pattern */}
@@ -44,14 +72,13 @@ export function BurgersSection() {
                   alt={burger.name}
                   className="w-full aspect-square object-cover rounded-xl transform group-hover:scale-105 transition-transform duration-500"
                 />
-                <a href="#menu">
-                  <Button
-                    size="icon"
-                    className="absolute top-6 right-6 bg-accent hover:bg-accent/90 text-accent-foreground rounded-full w-10 h-10 shadow-lg"
-                  >
-                    <Plus className="w-5 h-5" />
-                  </Button>
-                </a>
+                <Button
+                  size="icon"
+                  onClick={() => handleProductClick(burger)}
+                  className="absolute top-6 right-6 bg-accent hover:bg-accent/90 text-accent-foreground rounded-full w-10 h-10 shadow-lg"
+                >
+                  <Plus className="w-5 h-5" />
+                </Button>
                 <div className="absolute bottom-6 left-6 bg-black/60 backdrop-blur-md px-4 py-2 rounded-full">
                   <span className="text-accent text-xl font-bold">
                     €{burger.price.toFixed(2).replace(".", ",")}
@@ -69,6 +96,18 @@ export function BurgersSection() {
           ))}
         </div>
       </div>
+
+      {selectedProduct && (
+        <ProductModal
+          isOpen={isModalOpen}
+          onClose={() => {
+            setIsModalOpen(false);
+            setSelectedProduct(null);
+          }}
+          product={selectedProduct}
+          onAddToCart={handleAddToCart}
+        />
+      )}
     </section>
   );
 }

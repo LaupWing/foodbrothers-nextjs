@@ -1,10 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { Button } from "@/components/ui/button";
-import { Plus, Minus, Search } from "lucide-react";
+import { Plus, Minus, Search, ChevronLeft, ChevronRight } from "lucide-react";
 import { DietaryIcons, type DietaryType } from "@/components/dietary-icons";
 import { ProductModal } from "@/components/product-modal";
+import { useCartStore } from "@/store/cart-store";
 import menuData from "@/data/menu.json";
 
 const menuCategories = menuData.categories;
@@ -20,77 +21,19 @@ const menuItems = menuData.items as Record<
   }>
 >;
 
-interface CartItem {
-  name: string;
-  quantity: number;
-  price: number;
-  toppings?: { name: string; price: number }[];
-}
-
 export function MenuSection() {
   const [activeCategory, setActiveCategory] = useState("grill-beef");
-  const [cart, setCart] = useState<CartItem[]>([]);
   const [selectedProduct, setSelectedProduct] = useState<
     (typeof menuItems)["grill-beef"][0] | null
   >(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
 
-  const addToCart = (item: {
-    name: string;
-    price: number;
-    quantity?: number;
-    toppings?: { name: string; price: number }[];
-  }) => {
-    setCart((prev) => {
-      const existing = prev.find(
-        (i) =>
-          i.name === item.name &&
-          JSON.stringify(i.toppings) === JSON.stringify(item.toppings)
-      );
-      if (existing) {
-        return prev.map((i) =>
-          i.name === item.name &&
-          JSON.stringify(i.toppings) === JSON.stringify(item.toppings)
-            ? { ...i, quantity: i.quantity + (item.quantity || 1) }
-            : i
-        );
-      }
-      return [
-        ...prev,
-        {
-          ...item,
-          quantity: item.quantity || 1,
-          toppings: item.toppings || [],
-        },
-      ];
-    });
-  };
+  const { cart, addToCart, removeFromCart, getItemQuantity, getTotalItems, getTotalPrice } =
+    useCartStore();
 
-  const removeFromCart = (itemName: string) => {
-    setCart((prev) => {
-      const existing = prev.find((i) => i.name === itemName);
-      if (existing && existing.quantity > 1) {
-        return prev.map((i) =>
-          i.name === itemName ? { ...i, quantity: i.quantity - 1 } : i
-        );
-      }
-      return prev.filter((i) => i.name !== itemName);
-    });
-  };
-
-  const getItemQuantity = (itemName: string) => {
-    return cart
-      .filter((i) => i.name === itemName)
-      .reduce((sum, i) => sum + i.quantity, 0);
-  };
-
-  const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
-  const totalPrice = cart.reduce((sum, item) => {
-    const toppingsPrice =
-      item.toppings?.reduce((t, topping) => t + topping.price, 0) || 0;
-    return sum + (item.price + toppingsPrice) * item.quantity;
-  }, 0);
+  const totalItems = getTotalItems();
+  const totalPrice = getTotalPrice();
 
   const handleProductClick = (item: (typeof menuItems)["grill-beef"][0]) => {
     if (item.hasCustomization) {

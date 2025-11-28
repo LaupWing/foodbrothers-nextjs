@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useRouter } from "next/navigation";
 import {
   Drawer,
   DrawerContent,
@@ -10,19 +10,12 @@ import {
 } from "@/components/ui/drawer";
 import { Button } from "@/components/ui/button";
 import {
-  ArrowLeft,
-  MapPin,
-  User,
-  Clock,
-  CreditCard,
-  Ticket,
-  Bike,
-  Store,
-  ChevronRight,
+  X,
   Plus,
   Minus,
   Trash2,
   ShoppingBag,
+  ChevronRight,
 } from "lucide-react";
 import { useCartStore } from "@/store/cart-store";
 import { useLanguageStore } from "@/store/language-store";
@@ -32,97 +25,15 @@ interface CheckoutDrawerProps {
   onClose: () => void;
 }
 
-type ShippingMethod = "delivery" | "pickup";
-type Step = "cart" | "checkout";
-
-interface FormData {
-  postalCode: string;
-  houseNumber: string;
-  streetName: string;
-  city: string;
-  name: string;
-  phone: string;
-  email: string;
-  companyName: string;
-  orderNote: string;
-  deliveryTime: string;
-  paymentMethod: string;
-  discountCode: string;
-}
-
 export function CheckoutDrawer({ isOpen, onClose }: CheckoutDrawerProps) {
-  const [step, setStep] = useState<Step>("cart");
-  const [shippingMethod, setShippingMethod] =
-    useState<ShippingMethod>("delivery");
-  const [expandedSection, setExpandedSection] = useState<string | null>(
-    "address"
-  );
-  const [formData, setFormData] = useState<FormData>({
-    postalCode: "",
-    houseNumber: "",
-    streetName: "",
-    city: "",
-    name: "",
-    phone: "",
-    email: "",
-    companyName: "",
-    orderNote: "",
-    deliveryTime: "",
-    paymentMethod: "ideal",
-    discountCode: "",
-  });
-
-  const { cart, getTotalPrice, getTotalItems, updateQuantity, removeFromCart } = useCartStore();
+  const router = useRouter();
+  const { cart, getTotalPrice, getTotalItems, updateQuantity, removeFromCart } =
+    useCartStore();
   const { t, language } = useLanguageStore();
   const totalPrice = getTotalPrice();
   const totalItems = getTotalItems();
 
-  const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const toggleSection = (section: string) => {
-    setExpandedSection(expandedSection === section ? null : section);
-  };
-
-  const getSectionPreview = (section: string) => {
-    switch (section) {
-      case "address":
-        if (formData.streetName && formData.houseNumber) {
-          return `${formData.streetName} ${formData.houseNumber}, ${formData.postalCode} ${formData.city}`;
-        }
-        return null;
-      case "personal":
-        if (formData.name) {
-          return formData.name;
-        }
-        return null;
-      case "time":
-        return formData.deliveryTime || null;
-      case "payment":
-        return formData.paymentMethod === "ideal" ? "iDeal" : "Contant";
-      default:
-        return null;
-    }
-  };
-
-  const handleClose = () => {
-    setStep("cart");
-    onClose();
-  };
-
-  const handleBack = () => {
-    if (step === "checkout") {
-      setStep("cart");
-    } else {
-      handleClose();
-    }
-  };
-
-  const cartLabels = {
+  const labels = {
     nl: {
       yourOrder: "Jouw Bestelling",
       emptyCart: "Je winkelwagen is leeg",
@@ -139,576 +50,114 @@ export function CheckoutDrawer({ isOpen, onClose }: CheckoutDrawerProps) {
     },
   };
 
-  const labels = cartLabels[language];
+  const pageLabels = labels[language];
+
+  const handleProceedToCheckout = () => {
+    onClose();
+    router.push("/checkout");
+  };
 
   return (
-    <Drawer open={isOpen} onOpenChange={(open) => !open && handleClose()}>
+    <Drawer open={isOpen} onOpenChange={(open) => !open && onClose()}>
       <DrawerContent className="max-h-[95vh]">
         {/* Header */}
         <DrawerHeader className="border-b border-border pb-4">
-          <div className="flex items-center gap-3">
-            <button
-              onClick={handleBack}
-              className="w-10 h-10 rounded-full bg-secondary flex items-center justify-center hover:bg-muted transition-colors"
-            >
-              <ArrowLeft className="w-5 h-5 text-foreground" />
-            </button>
+          <div className="flex items-center justify-between">
             <DrawerTitle className="text-2xl font-serif text-primary">
-              {step === "cart" ? labels.yourOrder : t.checkout.title}
+              {pageLabels.yourOrder}
             </DrawerTitle>
-          </div>
-          {/* Step indicator */}
-          <div className="flex items-center gap-2 mt-4">
-            <div className={`flex-1 h-1 rounded-full ${step === "cart" ? "bg-primary" : "bg-primary"}`} />
-            <div className={`flex-1 h-1 rounded-full ${step === "checkout" ? "bg-primary" : "bg-border"}`} />
+            <DrawerClose asChild>
+              <button className="w-10 h-10 rounded-full bg-secondary flex items-center justify-center hover:bg-muted transition-colors">
+                <X className="w-5 h-5 text-foreground" />
+              </button>
+            </DrawerClose>
           </div>
         </DrawerHeader>
 
-        {/* Step 1: Cart Review */}
-        {step === "cart" && (
-          <div className="overflow-y-auto flex-1 px-4 py-4">
-            <div className="max-w-2xl mx-auto">
-              {cart.length === 0 ? (
-                <div className="flex flex-col items-center justify-center py-12 text-center">
-                  <ShoppingBag className="w-16 h-16 text-muted-foreground/50 mb-4" />
-                  <h3 className="text-lg font-semibold text-foreground mb-2">
-                    {labels.emptyCart}
-                  </h3>
-                  <p className="text-muted-foreground mb-6">
-                    {labels.emptyCartDesc}
-                  </p>
-                  <DrawerClose asChild>
-                    <Button className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-full px-6">
-                      {labels.continueShopping}
-                    </Button>
-                  </DrawerClose>
-                </div>
-              ) : (
-                <>
-                  <div className="space-y-4">
-                    {cart.map((item, index) => (
-                      <div
-                        key={index}
-                        className="bg-secondary rounded-xl p-4 flex gap-4"
-                      >
-                        <div className="relative shrink-0">
-                          <img
-                            src={item.image || "/placeholder.svg"}
-                            alt={item.name}
-                            className="w-20 h-20 object-cover rounded-lg"
-                          />
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <div className="flex justify-between items-start gap-2">
-                            <div>
-                              <h3 className="font-semibold text-foreground">
-                                {item.name}
-                              </h3>
-                              {item.toppings && item.toppings.length > 0 && (
-                                <p className="text-xs text-muted-foreground mt-1">
-                                  + {item.toppings.map((t) => t.name).join(", ")}
-                                </p>
-                              )}
-                            </div>
-                            <button
-                              onClick={() => removeFromCart(item.name)}
-                              className="text-muted-foreground hover:text-destructive transition-colors p-1"
-                            >
-                              <Trash2 className="w-4 h-4" />
-                            </button>
-                          </div>
-                          <div className="flex justify-between items-center mt-3">
-                            <div className="flex items-center gap-2">
-                              <button
-                                onClick={() =>
-                                  updateQuantity(item.name, item.quantity - 1)
-                                }
-                                className="w-8 h-8 rounded-full border border-border flex items-center justify-center hover:bg-muted transition-colors"
-                              >
-                                <Minus className="w-4 h-4 text-foreground" />
-                              </button>
-                              <span className="w-8 text-center font-semibold text-foreground">
-                                {item.quantity}
-                              </span>
-                              <button
-                                onClick={() =>
-                                  updateQuantity(item.name, item.quantity + 1)
-                                }
-                                className="w-8 h-8 rounded-full border border-border flex items-center justify-center hover:bg-muted transition-colors"
-                              >
-                                <Plus className="w-4 h-4 text-foreground" />
-                              </button>
-                            </div>
-                            <span className="text-accent font-bold">
-                              €{(item.price * item.quantity).toFixed(2).replace(".", ",")}
-                            </span>
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-
-                  {/* Cart footer */}
-                  <div className="mt-6 pt-4 border-t border-border">
-                    <div className="flex justify-between items-center mb-4">
-                      <span className="text-foreground font-semibold">
-                        {t.checkout.totalAmount} ({totalItems} {t.orderDelivery.items})
-                      </span>
-                      <span className="text-accent text-xl font-bold">
-                        €{totalPrice.toFixed(2).replace(".", ",")}
-                      </span>
-                    </div>
-                    <Button
-                      className="w-full bg-accent hover:bg-accent/90 text-accent-foreground py-6 rounded-full font-semibold text-lg"
-                      onClick={() => setStep("checkout")}
-                    >
-                      {labels.proceedToCheckout}
-                      <ChevronRight className="w-5 h-5 ml-2" />
-                    </Button>
-                  </div>
-                </>
-              )}
-            </div>
-          </div>
-        )}
-
-        {/* Step 2: Checkout Information */}
-        {step === "checkout" && (
-          <div className="overflow-y-auto flex-1 px-4 py-4">
-            <div className="max-w-2xl mx-auto">
-                {/* Shipping Method Toggle */}
-                <div className="flex gap-2 mb-6">
-                  <button
-                    onClick={() => setShippingMethod("delivery")}
-                    className={`flex-1 flex items-center justify-center gap-3 py-4 rounded-xl border-2 transition-all duration-200 ${
-                      shippingMethod === "delivery"
-                        ? "border-primary bg-primary/10"
-                        : "border-border bg-secondary hover:bg-muted"
-                    }`}
-                  >
-                    <Bike
-                      className={`w-6 h-6 ${shippingMethod === "delivery" ? "text-primary" : "text-muted-foreground"}`}
-                    />
-                    <span
-                      className={`font-medium ${shippingMethod === "delivery" ? "text-primary" : "text-foreground"}`}
-                    >
-                      {t.checkout.delivery}
-                    </span>
-                  </button>
-                  <button
-                    onClick={() => setShippingMethod("pickup")}
-                    className={`flex-1 flex items-center justify-center gap-3 py-4 rounded-xl border-2 transition-all duration-200 ${
-                      shippingMethod === "pickup"
-                        ? "border-primary bg-primary/10"
-                        : "border-border bg-secondary hover:bg-muted"
-                    }`}
-                  >
-                    <Store
-                      className={`w-6 h-6 ${shippingMethod === "pickup" ? "text-primary" : "text-muted-foreground"}`}
-                    />
-                    <span
-                      className={`font-medium ${shippingMethod === "pickup" ? "text-primary" : "text-foreground"}`}
-                    >
-                      {t.checkout.pickup}
-                    </span>
-                  </button>
-                </div>
-
-                {/* Address Section */}
-                {shippingMethod === "delivery" && (
-                  <div className="mb-4 bg-secondary rounded-xl overflow-hidden">
-                    <button
-                      onClick={() => toggleSection("address")}
-                      className="w-full flex items-center justify-between p-4"
-                    >
-                      <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
-                          <MapPin className="w-5 h-5 text-primary" />
-                        </div>
-                        <div className="text-left">
-                          <h3 className="font-semibold text-foreground">
-                            {t.checkout.deliveryAddress}
-                          </h3>
-                          {getSectionPreview("address") ? (
-                            <p className="text-sm text-muted-foreground">
-                              {getSectionPreview("address")}
-                            </p>
-                          ) : (
-                            <p className="text-sm text-destructive">
-                              Vul uw adresgegevens in
-                            </p>
-                          )}
-                        </div>
-                      </div>
-                      <ChevronRight
-                        className={`w-5 h-5 text-muted-foreground transition-transform duration-200 ${expandedSection === "address" ? "rotate-90" : ""}`}
-                      />
-                    </button>
-
+        {/* Cart Content */}
+        <div className="overflow-y-auto flex-1 px-4 py-4">
+          <div className="max-w-2xl mx-auto">
+            {cart.length === 0 ? (
+              <div className="flex flex-col items-center justify-center py-12 text-center">
+                <ShoppingBag className="w-16 h-16 text-muted-foreground/50 mb-4" />
+                <h3 className="text-lg font-semibold text-foreground mb-2">
+                  {pageLabels.emptyCart}
+                </h3>
+                <p className="text-muted-foreground mb-6">
+                  {pageLabels.emptyCartDesc}
+                </p>
+                <DrawerClose asChild>
+                  <Button className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-full px-6">
+                    {pageLabels.continueShopping}
+                  </Button>
+                </DrawerClose>
+              </div>
+            ) : (
+              <>
+                <div className="space-y-4">
+                  {cart.map((item, index) => (
                     <div
-                      className={`grid transition-all duration-300 ease-in-out ${expandedSection === "address" ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"}`}
+                      key={index}
+                      className="bg-secondary rounded-xl p-4 flex gap-4"
                     >
-                      <div className="overflow-hidden">
-                        <div className="px-4 pb-4 space-y-4">
-                          <div className="grid grid-cols-2 gap-4">
-                            <div>
-                              <label className="text-sm text-muted-foreground mb-1 block">
-                                Postcode <span className="text-destructive">*</span>
-                              </label>
-                              <input
-                                type="text"
-                                name="postalCode"
-                                value={formData.postalCode}
-                                onChange={handleInputChange}
-                                placeholder="1234 AB"
-                                className="w-full px-4 py-3 bg-background rounded-lg border border-border focus:ring-2 focus:ring-primary focus:outline-none"
-                              />
-                            </div>
-                            <div>
-                              <label className="text-sm text-muted-foreground mb-1 block">
-                                Huisnummer <span className="text-destructive">*</span>
-                              </label>
-                              <input
-                                type="text"
-                                name="houseNumber"
-                                value={formData.houseNumber}
-                                onChange={handleInputChange}
-                                placeholder="123"
-                                className="w-full px-4 py-3 bg-background rounded-lg border border-border focus:ring-2 focus:ring-primary focus:outline-none"
-                              />
-                            </div>
-                          </div>
+                      <div className="relative shrink-0">
+                        <img
+                          src={item.image || "/placeholder.svg"}
+                          alt={item.name}
+                          className="w-20 h-20 object-cover rounded-lg"
+                        />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex justify-between items-start gap-2">
                           <div>
-                            <label className="text-sm text-muted-foreground mb-1 block">
-                              Straatnaam <span className="text-destructive">*</span>
-                            </label>
-                            <input
-                              type="text"
-                              name="streetName"
-                              value={formData.streetName}
-                              onChange={handleInputChange}
-                              placeholder="Straatnaam"
-                              className="w-full px-4 py-3 bg-background rounded-lg border border-border focus:ring-2 focus:ring-primary focus:outline-none"
-                            />
-                          </div>
-                          <div>
-                            <label className="text-sm text-muted-foreground mb-1 block">
-                              Woonplaats <span className="text-destructive">*</span>
-                            </label>
-                            <input
-                              type="text"
-                              name="city"
-                              value={formData.city}
-                              onChange={handleInputChange}
-                              placeholder="Woonplaats"
-                              className="w-full px-4 py-3 bg-background rounded-lg border border-border focus:ring-2 focus:ring-primary focus:outline-none"
-                            />
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                )}
-
-                {/* Personal Info Section */}
-                <div className="mb-4 bg-secondary rounded-xl overflow-hidden">
-                  <button
-                    onClick={() => toggleSection("personal")}
-                    className="w-full flex items-center justify-between p-4"
-                  >
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
-                        <User className="w-5 h-5 text-primary" />
-                      </div>
-                      <div className="text-left">
-                        <h3 className="font-semibold text-foreground">
-                          {t.checkout.personalInfo}
-                        </h3>
-                        {getSectionPreview("personal") ? (
-                          <p className="text-sm text-muted-foreground">
-                            {getSectionPreview("personal")}
-                          </p>
-                        ) : (
-                          <p className="text-sm text-destructive">
-                            Vul uw persoonlijke gegevens in
-                          </p>
-                        )}
-                      </div>
-                    </div>
-                    <ChevronRight
-                      className={`w-5 h-5 text-muted-foreground transition-transform duration-200 ${expandedSection === "personal" ? "rotate-90" : ""}`}
-                    />
-                  </button>
-
-                  <div
-                    className={`grid transition-all duration-300 ease-in-out ${expandedSection === "personal" ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"}`}
-                  >
-                    <div className="overflow-hidden">
-                      <div className="px-4 pb-4 space-y-4">
-                        <div>
-                          <label className="text-sm text-muted-foreground mb-1 block">
-                            Naam <span className="text-destructive">*</span>
-                          </label>
-                          <input
-                            type="text"
-                            name="name"
-                            value={formData.name}
-                            onChange={handleInputChange}
-                            placeholder="Naam"
-                            className="w-full px-4 py-3 bg-background rounded-lg border border-border focus:ring-2 focus:ring-primary focus:outline-none"
-                          />
-                        </div>
-                        <div>
-                          <label className="text-sm text-muted-foreground mb-1 block">
-                            Telefoonnummer <span className="text-destructive">*</span>
-                          </label>
-                          <input
-                            type="tel"
-                            name="phone"
-                            value={formData.phone}
-                            onChange={handleInputChange}
-                            placeholder="Telefoonnummer"
-                            className="w-full px-4 py-3 bg-background rounded-lg border border-border focus:ring-2 focus:ring-primary focus:outline-none"
-                          />
-                        </div>
-                        <div>
-                          <label className="text-sm text-muted-foreground mb-1 block">
-                            E-mailadres <span className="text-destructive">*</span>
-                          </label>
-                          <input
-                            type="email"
-                            name="email"
-                            value={formData.email}
-                            onChange={handleInputChange}
-                            placeholder="E-mailadres"
-                            className="w-full px-4 py-3 bg-background rounded-lg border border-border focus:ring-2 focus:ring-primary focus:outline-none"
-                          />
-                        </div>
-                        <div>
-                          <label className="text-sm text-muted-foreground mb-1 block">
-                            Bedrijfsnaam{" "}
-                            <span className="text-muted-foreground text-xs">
-                              (optioneel)
-                            </span>
-                          </label>
-                          <input
-                            type="text"
-                            name="companyName"
-                            value={formData.companyName}
-                            onChange={handleInputChange}
-                            placeholder="Bedrijfsnaam"
-                            className="w-full px-4 py-3 bg-background rounded-lg border border-border focus:ring-2 focus:ring-primary focus:outline-none"
-                          />
-                        </div>
-                        <div>
-                          <label className="text-sm text-muted-foreground mb-1 block">
-                            Bestelling opmerking{" "}
-                            <span className="text-muted-foreground text-xs">
-                              (optioneel)
-                            </span>
-                          </label>
-                          <input
-                            type="text"
-                            name="orderNote"
-                            value={formData.orderNote}
-                            onChange={handleInputChange}
-                            placeholder="Bestelling opmerking"
-                            className="w-full px-4 py-3 bg-background rounded-lg border border-border focus:ring-2 focus:ring-primary focus:outline-none"
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Delivery Time Section */}
-                <div className="mb-4 bg-secondary rounded-xl overflow-hidden">
-                  <button
-                    onClick={() => toggleSection("time")}
-                    className="w-full flex items-center justify-between p-4"
-                  >
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
-                        <Clock className="w-5 h-5 text-primary" />
-                      </div>
-                      <div className="text-left">
-                        <h3 className="font-semibold text-foreground">
-                          {t.checkout.deliveryTime}
-                        </h3>
-                        <p className="text-sm text-muted-foreground">
-                          {formData.deliveryTime || "Selecteer tijdstip"}
-                        </p>
-                      </div>
-                    </div>
-                    <ChevronRight
-                      className={`w-5 h-5 text-muted-foreground transition-transform duration-200 ${expandedSection === "time" ? "rotate-90" : ""}`}
-                    />
-                  </button>
-
-                  <div
-                    className={`grid transition-all duration-300 ease-in-out ${expandedSection === "time" ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"}`}
-                  >
-                    <div className="overflow-hidden">
-                      <div className="px-4 pb-4">
-                        <select
-                          name="deliveryTime"
-                          value={formData.deliveryTime}
-                          onChange={handleInputChange}
-                          className="w-full px-4 py-3 bg-background rounded-lg border border-border focus:ring-2 focus:ring-primary focus:outline-none"
-                        >
-                          <option value="">Selecteer tijdstip</option>
-                          <option value="Zo snel mogelijk">Zo snel mogelijk</option>
-                          <option value="17:30">17:30</option>
-                          <option value="18:00">18:00</option>
-                          <option value="18:30">18:30</option>
-                          <option value="19:00">19:00</option>
-                          <option value="19:30">19:30</option>
-                          <option value="20:00">20:00</option>
-                          <option value="20:30">20:30</option>
-                          <option value="21:00">21:00</option>
-                        </select>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Payment Method Section */}
-                <div className="mb-4 bg-secondary rounded-xl overflow-hidden">
-                  <button
-                    onClick={() => toggleSection("payment")}
-                    className="w-full flex items-center justify-between p-4"
-                  >
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
-                        <CreditCard className="w-5 h-5 text-primary" />
-                      </div>
-                      <div className="text-left">
-                        <h3 className="font-semibold text-foreground">
-                          {t.checkout.paymentMethod}
-                        </h3>
-                        <p className="text-sm text-muted-foreground">
-                          {formData.paymentMethod === "ideal" ? t.checkout.ideal : t.checkout.cash}
-                        </p>
-                      </div>
-                    </div>
-                    <ChevronRight
-                      className={`w-5 h-5 text-muted-foreground transition-transform duration-200 ${expandedSection === "payment" ? "rotate-90" : ""}`}
-                    />
-                  </button>
-
-                  <div
-                    className={`grid transition-all duration-300 ease-in-out ${expandedSection === "payment" ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"}`}
-                  >
-                    <div className="overflow-hidden">
-                      <div className="px-4 pb-4 space-y-2">
-                        <label
-                          className={`flex items-center justify-between p-4 rounded-lg cursor-pointer transition-all duration-200 ${formData.paymentMethod === "ideal" ? "bg-primary/10 border-2 border-primary" : "bg-background border-2 border-transparent hover:bg-muted"}`}
-                        >
-                          <div className="flex items-center gap-3">
-                            <img
-                              src="https://cdn-03.ultimatumapp.com/images/order-icons/ideal.png"
-                              alt="iDeal"
-                              className="w-8 h-8"
-                            />
-                            <span className="font-medium text-foreground">{t.checkout.ideal}</span>
-                          </div>
-                          <input
-                            type="radio"
-                            name="paymentMethod"
-                            value="ideal"
-                            checked={formData.paymentMethod === "ideal"}
-                            onChange={handleInputChange}
-                            className="w-5 h-5 text-primary"
-                          />
-                        </label>
-                        <label
-                          className={`flex items-center justify-between p-4 rounded-lg cursor-pointer transition-all duration-200 ${formData.paymentMethod === "cash" ? "bg-primary/10 border-2 border-primary" : "bg-background border-2 border-transparent hover:bg-muted"}`}
-                        >
-                          <div className="flex items-center gap-3">
-                            <img
-                              src="https://cdn-03.ultimatumapp.com/images/order-icons/cash.svg"
-                              alt="Cash"
-                              className="w-8 h-8"
-                            />
-                            <span className="font-medium text-foreground">{t.checkout.cash}</span>
-                          </div>
-                          <input
-                            type="radio"
-                            name="paymentMethod"
-                            value="cash"
-                            checked={formData.paymentMethod === "cash"}
-                            onChange={handleInputChange}
-                            className="w-5 h-5 text-primary"
-                          />
-                        </label>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Discount Code */}
-                <div className="mb-4 bg-secondary rounded-xl p-4">
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
-                      <Ticket className="w-5 h-5 text-primary" />
-                    </div>
-                    <div className="flex-1 flex gap-2 min-w-0">
-                      <input
-                        type="text"
-                        name="discountCode"
-                        value={formData.discountCode}
-                        onChange={handleInputChange}
-                        placeholder={t.checkout.discountCode}
-                        className="flex-1 min-w-0 px-3 py-3 bg-background rounded-lg border border-border focus:ring-2 focus:ring-primary focus:outline-none text-sm"
-                      />
-                      <Button className="bg-primary hover:bg-primary/90 text-primary-foreground px-4 shrink-0">
-                        OK
-                      </Button>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Order Summary */}
-                {cart.length > 0 && (
-                  <div className="mb-4 bg-secondary rounded-xl p-4">
-                    <h3 className="font-semibold text-foreground mb-3">
-                      {t.checkout.orderSummary}
-                    </h3>
-                    <div className="space-y-2">
-                      {cart.map((item, index) => (
-                        <div key={index} className="flex items-start gap-3">
-                          <div className="relative shrink-0">
-                            <img
-                              src={item.image || "/placeholder.svg"}
-                              alt={item.name}
-                              className="w-10 h-10 object-cover rounded-lg"
-                            />
-                            <span className="absolute -top-1 -right-1 bg-primary text-primary-foreground text-xs font-bold w-4 h-4 rounded-full flex items-center justify-center">
-                              {item.quantity}
-                            </span>
-                          </div>
-                          <div className="flex-1 min-w-0">
-                            <div className="flex justify-between gap-2 text-sm">
-                              <span className="text-foreground truncate">
-                                {item.name}
-                              </span>
-                              <span className="text-foreground shrink-0">
-                                €{(item.price * item.quantity).toFixed(2).replace(".", ",")}
-                              </span>
-                            </div>
+                            <h3 className="font-semibold text-foreground">
+                              {item.name}
+                            </h3>
                             {item.toppings && item.toppings.length > 0 && (
-                              <p className="text-xs text-muted-foreground">
-                                + {item.toppings.map((topping) => topping.name).join(", ")}
+                              <p className="text-xs text-muted-foreground mt-1">
+                                + {item.toppings.map((t) => t.name).join(", ")}
                               </p>
                             )}
                           </div>
+                          <button
+                            onClick={() => removeFromCart(item.name)}
+                            className="text-muted-foreground hover:text-destructive transition-colors p-1"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </button>
                         </div>
-                      ))}
+                        <div className="flex justify-between items-center mt-3">
+                          <div className="flex items-center gap-2">
+                            <button
+                              onClick={() =>
+                                updateQuantity(item.name, item.quantity - 1)
+                              }
+                              className="w-8 h-8 rounded-full border border-border flex items-center justify-center hover:bg-muted transition-colors"
+                            >
+                              <Minus className="w-4 h-4 text-foreground" />
+                            </button>
+                            <span className="w-8 text-center font-semibold text-foreground">
+                              {item.quantity}
+                            </span>
+                            <button
+                              onClick={() =>
+                                updateQuantity(item.name, item.quantity + 1)
+                              }
+                              className="w-8 h-8 rounded-full border border-border flex items-center justify-center hover:bg-muted transition-colors"
+                            >
+                              <Plus className="w-4 h-4 text-foreground" />
+                            </button>
+                          </div>
+                          <span className="text-accent font-bold">
+                            €{(item.price * item.quantity).toFixed(2).replace(".", ",")}
+                          </span>
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                )}
+                  ))}
+                </div>
 
-                {/* Checkout footer */}
+                {/* Cart footer */}
                 <div className="mt-6 pt-4 border-t border-border">
                   <div className="flex justify-between items-center mb-4">
                     <span className="text-foreground font-semibold">
@@ -720,17 +169,16 @@ export function CheckoutDrawer({ isOpen, onClose }: CheckoutDrawerProps) {
                   </div>
                   <Button
                     className="w-full bg-accent hover:bg-accent/90 text-accent-foreground py-6 rounded-full font-semibold text-lg"
-                    disabled={cart.length === 0}
+                    onClick={handleProceedToCheckout}
                   >
-                    {t.checkout.placeOrder}
+                    {pageLabels.proceedToCheckout}
+                    <ChevronRight className="w-5 h-5 ml-2" />
                   </Button>
-                  <p className="text-muted-foreground text-xs text-center mt-4">
-                    {t.orderDelivery.freeDelivery}
-                  </p>
                 </div>
-            </div>
+              </>
+            )}
           </div>
-        )}
+        </div>
       </DrawerContent>
     </Drawer>
   );

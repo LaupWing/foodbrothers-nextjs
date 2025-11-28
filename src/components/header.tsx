@@ -52,11 +52,11 @@ export function Header() {
             {/* Logo - left on desktop, center on mobile */}
             <Link href="/" className="flex items-center md:flex-none absolute left-1/2 -translate-x-1/2 md:static md:translate-x-0">
               <Image
-                src="/logo.png"
+                src="/logo_big.png"
                 alt="Food Brothers"
                 width={280}
                 height={80}
-                className="h-14 md:h-20 w-auto"
+                className="h-10 md:h-14 w-auto"
               />
             </Link>
 

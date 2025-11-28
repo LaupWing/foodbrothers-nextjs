@@ -42,6 +42,22 @@ export function MenuSection() {
   const totalItems = getTotalItems();
   const totalPrice = getTotalPrice();
 
+  // Highlight search matches
+  const highlightText = (text: string, query: string) => {
+    if (!query.trim()) return text;
+    const regex = new RegExp(`(${query.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")})`, "gi");
+    const parts = text.split(regex);
+    return parts.map((part, i) =>
+      regex.test(part) ? (
+        <mark key={i} className="bg-accent/30 text-foreground rounded px-0.5">
+          {part}
+        </mark>
+      ) : (
+        part
+      )
+    );
+  };
+
   const updateScrollButtons = () => {
     if (scrollContainerRef.current) {
       const { scrollLeft, scrollWidth, clientWidth } =
@@ -227,7 +243,7 @@ export function MenuSection() {
                         <div className="flex items-start sm:items-center justify-between gap-2">
                           <div className="flex items-center gap-2 flex-wrap">
                             <h3 className="text-foreground font-semibold">
-                              {item.name}
+                              {highlightText(item.name, searchQuery)}
                             </h3>
                             {item.hasCustomization && (
                               <span className="text-xs text-primary bg-primary/10 px-2 py-0.5 rounded-full">
@@ -240,7 +256,7 @@ export function MenuSection() {
                           </span>
                         </div>
                         <p className="text-muted-foreground text-sm my-2 line-clamp-2">
-                          {item.description}
+                          {highlightText(item.description, searchQuery)}
                         </p>
                         <DietaryIcons items={item.dietary} size="sm" />
                       </div>
@@ -342,6 +358,7 @@ export function MenuSection() {
               <Button
                 className="w-full bg-accent hover:bg-accent/90 text-accent-foreground py-6 rounded-full font-medium"
                 disabled={cart.length === 0}
+                onClick={() => setIsCheckoutOpen(true)}
               >
                 {t.orderDelivery.orderOnline}
               </Button>

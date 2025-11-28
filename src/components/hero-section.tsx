@@ -1,7 +1,12 @@
+"use client"
+
 import { Button } from "@/components/ui/button"
 import { ChevronRight } from "lucide-react"
+import { useLanguageStore } from "@/store/language-store"
+import Link from "next/link"
 
 export function HeroSection() {
+  const { t } = useLanguageStore()
   return (
     <section
       id="home"
@@ -24,16 +29,12 @@ export function HeroSection() {
               Experience handcrafted burgers, crispy chicken, and fresh salads made with love and premium ingredients.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-              <Button className="bg-accent hover:bg-accent/90 text-accent-foreground px-8 py-6 text-lg rounded-full font-medium">
-                Order Now
-                <ChevronRight className="w-5 h-5 ml-2" />
-              </Button>
-              <Button
-                variant="outline"
-                className="border-primary text-primary hover:bg-primary hover:text-primary-foreground px-8 py-6 text-lg rounded-full font-medium bg-transparent"
-              >
-                View Menu
-              </Button>
+              <Link href="/menu">
+                <Button className="bg-accent hover:bg-accent/90 text-accent-foreground px-8 py-6 text-lg rounded-full font-medium">
+                  {t.hero.viewMenu}
+                  <ChevronRight className="w-5 h-5 ml-2" />
+                </Button>
+              </Link>
             </div>
           </div>
 

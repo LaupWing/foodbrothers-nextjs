@@ -18,9 +18,10 @@ interface ProductModalProps {
     description: string
     price: number
     dietary: DietaryType[]
+    image?: string
     toppings?: Topping[]
   }
-  onAddToCart: (product: { name: string; price: number; quantity: number; toppings: Topping[] }) => void
+  onAddToCart: (product: { name: string; price: number; quantity: number; image?: string; toppings: Topping[] }) => void
 }
 
 export function ProductModal({ isOpen, onClose, product, onAddToCart }: ProductModalProps) {
@@ -47,6 +48,7 @@ export function ProductModal({ isOpen, onClose, product, onAddToCart }: ProductM
       name: product.name,
       price: product.price + toppingsTotal,
       quantity,
+      image: product.image,
       toppings: selectedToppings,
     })
     setQuantity(1)

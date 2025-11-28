@@ -4,6 +4,7 @@ interface CartItem {
   name: string;
   quantity: number;
   price: number;
+  image?: string;
   toppings?: { name: string; price: number }[];
 }
 
@@ -13,6 +14,7 @@ interface CartStore {
     name: string;
     price: number;
     quantity?: number;
+    image?: string;
     toppings?: { name: string; price: number }[];
   }) => void;
   removeFromCart: (itemName: string) => void;

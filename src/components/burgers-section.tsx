@@ -27,7 +27,7 @@ export function BurgersSection() {
   >(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const { addToCart } = useCartStore();
+  const { addToCart, getItemQuantity } = useCartStore();
 
   const handleProductClick = (burger: (typeof featuredBurgers)[0]) => {
     setSelectedProduct(burger);
@@ -64,21 +64,27 @@ export function BurgersSection() {
         </div>
 
         <div className="grid md:grid-cols-3 gap-8 lg:gap-12">
-          {featuredBurgers.map((burger, index) => (
-            <div key={index} className="group text-center">
-              <div className="relative mb-6 overflow-hidden rounded-2xl bg-white/10 backdrop-blur-sm p-4">
-                <img
-                  src={burger.image || "/placeholder.svg"}
-                  alt={burger.name}
-                  className="w-full aspect-square object-cover rounded-xl transform group-hover:scale-105 transition-transform duration-500"
-                />
-                <Button
-                  size="icon"
-                  onClick={() => handleProductClick(burger)}
-                  className="absolute top-6 right-6 bg-accent hover:bg-accent/90 text-accent-foreground rounded-full w-10 h-10 shadow-lg"
-                >
-                  <Plus className="w-5 h-5" />
-                </Button>
+          {featuredBurgers.map((burger, index) => {
+            const quantity = getItemQuantity(burger.name);
+            return (
+              <div key={index} className="group text-center">
+                <div className="relative mb-6 overflow-hidden rounded-2xl bg-white/10 backdrop-blur-sm p-4">
+                  <img
+                    src={burger.image || "/placeholder.svg"}
+                    alt={burger.name}
+                    className="w-full aspect-square object-cover rounded-xl transform group-hover:scale-105 transition-transform duration-500"
+                  />
+                  <Button
+                    size="icon"
+                    onClick={() => handleProductClick(burger)}
+                    className="absolute top-6 right-6 bg-accent hover:bg-accent/90 text-accent-foreground rounded-full w-10 h-10 shadow-xl shadow-black/40"
+                  >
+                    {quantity > 0 ? (
+                      <span className="font-bold text-base">{quantity}</span>
+                    ) : (
+                      <Plus className="w-5 h-5" />
+                    )}
+                  </Button>
                 <div className="absolute bottom-6 left-6 bg-black/60 backdrop-blur-md px-4 py-2 rounded-full">
                   <span className="text-accent text-xl font-bold">
                     €{burger.price.toFixed(2).replace(".", ",")}
@@ -93,7 +99,8 @@ export function BurgersSection() {
                 <DietaryIcons items={burger.dietary} size="sm" />
               </div>
             </div>
-          ))}
+            );
+          })}
         </div>
       </div>
 

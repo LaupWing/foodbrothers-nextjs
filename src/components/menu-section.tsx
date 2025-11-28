@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Plus, Minus, Search, ChevronLeft, ChevronRight } from "lucide-react";
+import { Plus, Search, ChevronLeft, ChevronRight } from "lucide-react";
 import { DietaryIcons, type DietaryType } from "@/components/dietary-icons";
 import { ProductModal } from "@/components/product-modal";
 import { useCartStore } from "@/store/cart-store";
@@ -32,14 +32,8 @@ export function MenuSection() {
   const [canScrollRight, setCanScrollRight] = useState(true);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
-  const {
-    cart,
-    addToCart,
-    removeFromCart,
-    getItemQuantity,
-    getTotalItems,
-    getTotalPrice,
-  } = useCartStore();
+  const { cart, addToCart, getItemQuantity, getTotalItems, getTotalPrice } =
+    useCartStore();
 
   const totalItems = getTotalItems();
   const totalPrice = getTotalPrice();
@@ -81,7 +75,7 @@ export function MenuSection() {
       setSelectedProduct(item);
       setIsModalOpen(true);
     } else {
-      addToCart({ name: item.name, price: item.price });
+      addToCart({ name: item.name, price: item.price, image: item.image });
     }
   };
 
@@ -89,6 +83,7 @@ export function MenuSection() {
     name: string;
     price: number;
     quantity: number;
+    image?: string;
     toppings: { name: string; price: number }[];
   }) => {
     addToCart(product);
@@ -189,85 +184,82 @@ export function MenuSection() {
                   <div
                     key={index}
                     onClick={() => handleProductClick(item)}
-                    className={`flex items-center gap-4 p-4 bg-secondary rounded-xl hover:bg-muted transition-colors ${
+                    className={`p-4 bg-secondary rounded-xl hover:bg-muted transition-colors relative ${
                       item.hasCustomization
                         ? "cursor-pointer"
                         : "cursor-default"
                     }`}
                   >
-                    {item.image && (
-                      <div className="shrink-0">
-                        <img
-                          src={item.image || "/placeholder.svg"}
-                          alt={item.name}
-                          className="w-20 h-20 object-cover rounded-lg"
-                        />
-                      </div>
-                    )}
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-2 flex-wrap">
-                        <h3 className="text-foreground font-semibold">
-                          {item.name}
-                        </h3>
-                        {item.hasCustomization && (
-                          <span className="text-xs text-primary bg-primary/10 px-2 py-0.5 rounded-full">
-                            Customize
-                          </span>
-                        )}
-                      </div>
-                      <p className="text-muted-foreground text-sm mb-2 line-clamp-2">
-                        {item.description}
-                      </p>
-                      <DietaryIcons items={item.dietary} size="sm" />
-                    </div>
+                    {/* Mobile: Absolute positioned add button */}
                     <div
-                      className="flex flex-col items-end gap-2"
+                      className="absolute top-3 right-3 z-10 sm:hidden"
                       onClick={(e) => e.stopPropagation()}
                     >
-                      <span className="text-accent font-bold text-lg">
-                        €{item.price.toFixed(2).replace(".", ",")}
-                      </span>
-                      {quantity > 0 ? (
-                        <div className="flex items-center gap-2">
-                          <button
-                            onClick={() => removeFromCart(item.name)}
-                            className="w-8 h-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center hover:bg-primary/90"
-                          >
-                            <Minus className="w-4 h-4" />
-                          </button>
-                          <span className="text-foreground font-bold w-6 text-center">
-                            {quantity}
-                          </span>
-                          <button
-                            onClick={() =>
-                              item.hasCustomization
-                                ? handleProductClick(item)
-                                : addToCart({
-                                    name: item.name,
-                                    price: item.price,
-                                  })
-                            }
-                            className="w-8 h-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center hover:bg-primary/90"
-                          >
-                            <Plus className="w-4 h-4" />
-                          </button>
+                      <Button
+                        onClick={() => handleProductClick(item)}
+                        size="icon"
+                        className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-full w-9 h-9 shadow-lg shadow-primary/30"
+                      >
+                        {quantity > 0 ? (
+                          <span className="font-bold text-sm">{quantity}</span>
+                        ) : (
+                          <Plus className="w-5 h-5" />
+                        )}
+                      </Button>
+                    </div>
+
+                    {/* Mobile: Stack layout, Desktop: Row layout */}
+                    <div className="flex flex-col sm:flex-row sm:items-center gap-4">
+                      {item.image && (
+                        <div className="shrink-0">
+                          <img
+                            src={item.image || "/placeholder.svg"}
+                            alt={item.name}
+                            className="w-full h-32 sm:w-20 sm:h-20 object-cover rounded-lg"
+                          />
                         </div>
-                      ) : (
+                      )}
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-start sm:items-center justify-between gap-2">
+                          <div className="flex items-center gap-2 flex-wrap">
+                            <h3 className="text-foreground font-semibold">
+                              {item.name}
+                            </h3>
+                            {item.hasCustomization && (
+                              <span className="text-xs text-primary bg-primary/10 px-2 py-0.5 rounded-full">
+                                Customize
+                              </span>
+                            )}
+                          </div>
+                          <span className="text-accent font-bold text-lg shrink-0 sm:hidden">
+                            €{item.price.toFixed(2).replace(".", ",")}
+                          </span>
+                        </div>
+                        <p className="text-muted-foreground text-sm my-2 line-clamp-2">
+                          {item.description}
+                        </p>
+                        <DietaryIcons items={item.dietary} size="sm" />
+                      </div>
+                      {/* Desktop: Price and buttons on the right */}
+                      <div
+                        className="hidden sm:flex flex-col items-end gap-2"
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        <span className="text-accent font-bold text-lg">
+                          €{item.price.toFixed(2).replace(".", ",")}
+                        </span>
                         <Button
-                          onClick={() =>
-                            item.hasCustomization
-                              ? handleProductClick(item)
-                              : addToCart({
-                                  name: item.name,
-                                  price: item.price,
-                                })
-                          }
+                          onClick={() => handleProductClick(item)}
                           size="sm"
                           className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-full"
                         >
-                          <Plus className="w-4 h-4" />
+                          {quantity > 0 ? (
+                            <span className="font-bold text-sm">{quantity}</span>
+                          ) : (
+                            <Plus className="w-4 h-4" />
+                          )}
                         </Button>
-                      )}
+                      </div>
                     </div>
                   </div>
                 );
@@ -285,36 +277,42 @@ export function MenuSection() {
                 Fast delivery to your doorstep
               </p>
 
-              <div className="space-y-4 mb-6">
-                <img
-                  src="/placeholder.svg?height=200&width=300"
-                  alt="Delivery"
-                  className="w-full rounded-xl"
-                />
-
+              <div className="mb-6">
                 {cart.length > 0 ? (
-                  <div className="space-y-2 max-h-64 overflow-y-auto">
+                  <div className="space-y-3 max-h-64 overflow-y-auto">
                     <h4 className="text-foreground font-semibold">
                       Your Order:
                     </h4>
                     {cart.map((item, index) => (
-                      <div key={index} className="text-sm">
-                        <div className="flex justify-between">
-                          <span className="text-muted-foreground">
-                            {item.quantity}x {item.name}
-                          </span>
-                          <span className="text-foreground">
-                            €
-                            {(item.price * item.quantity)
-                              .toFixed(2)
-                              .replace(".", ",")}
+                      <div key={index} className="flex items-start gap-3">
+                        <div className="relative shrink-0">
+                          <img
+                            src={item.image || "/placeholder.svg"}
+                            alt={item.name}
+                            className="w-12 h-12 object-cover rounded-lg"
+                          />
+                          <span className="absolute -top-1 -right-1 bg-primary text-primary-foreground text-xs font-bold w-5 h-5 rounded-full flex items-center justify-center">
+                            {item.quantity}
                           </span>
                         </div>
-                        {item.toppings && item.toppings.length > 0 && (
-                          <div className="text-xs text-muted-foreground pl-4">
-                            + {item.toppings.map((t) => t.name).join(", ")}
+                        <div className="flex-1 min-w-0 text-sm">
+                          <div className="flex justify-between gap-2">
+                            <span className="text-foreground font-medium truncate">
+                              {item.name}
+                            </span>
+                            <span className="text-foreground shrink-0">
+                              €
+                              {(item.price * item.quantity)
+                                .toFixed(2)
+                                .replace(".", ",")}
+                            </span>
                           </div>
-                        )}
+                          {item.toppings && item.toppings.length > 0 && (
+                            <div className="text-xs text-muted-foreground">
+                              + {item.toppings.map((t) => t.name).join(", ")}
+                            </div>
+                          )}
+                        </div>
                       </div>
                     ))}
                     <div className="border-t border-border pt-2 mt-2">
@@ -329,9 +327,11 @@ export function MenuSection() {
                     </div>
                   </div>
                 ) : (
-                  <p className="text-muted-foreground text-center py-4">
-                    Your cart is empty
-                  </p>
+                  <img
+                    src="https://images.unsplash.com/photo-1526367790999-0150786686a2?w=400&h=300&fit=crop"
+                    alt="Delivery"
+                    className="w-full rounded-xl"
+                  />
                 )}
               </div>
 

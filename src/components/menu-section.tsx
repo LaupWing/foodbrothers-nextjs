@@ -78,6 +78,7 @@ export function MenuSection() {
       setIsModalOpen(true);
     } else {
       addToCart({ name: item.name, price: item.price, image: item.image });
+      setIsCheckoutOpen(true);
     }
   };
 

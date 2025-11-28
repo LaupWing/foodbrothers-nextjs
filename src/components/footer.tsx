@@ -7,7 +7,6 @@ import {
   MapPin,
   Phone,
   Mail,
-  Clock,
 } from "lucide-react";
 
 export function Footer() {
@@ -98,18 +97,18 @@ export function Footer() {
               <li className="flex items-start gap-3">
                 <MapPin className="w-5 h-5 text-primary mt-0.5" />
                 <span className="text-slate-400">
-                  123 Food Street,
+                  Overamstelstraat 1
                   <br />
-                  Tasty City, TC 12345
+                  1091TL Amsterdam
                 </span>
               </li>
               <li className="flex items-center gap-3">
                 <Phone className="w-5 h-5 text-primary" />
-                <span className="text-slate-400">+1 (555) 123-4567</span>
+                <span className="text-slate-400">+31 20 123 4567</span>
               </li>
               <li className="flex items-center gap-3">
                 <Mail className="w-5 h-5 text-primary" />
-                <span className="text-slate-400">info@foodbrothers.com</span>
+                <span className="text-slate-400">info@foodbrothers.nl</span>
               </li>
             </ul>
           </div>
@@ -117,27 +116,22 @@ export function Footer() {
           {/* Opening Hours */}
           <div>
             <h3 className="text-white font-bold text-lg mb-6">Opening Hours</h3>
-            <ul className="space-y-3">
-              <li className="flex items-center gap-3">
-                <Clock className="w-5 h-5 text-primary" />
-                <div>
-                  <p className="text-white font-medium">Mon - Thu</p>
-                  <p className="text-slate-400">10:00 AM - 10:00 PM</p>
-                </div>
+            <ul className="space-y-2 text-sm">
+              <li className="flex justify-between">
+                <span className="text-slate-500">Maandag</span>
+                <span className="text-red-400">Gesloten</span>
               </li>
-              <li className="flex items-center gap-3">
-                <Clock className="w-5 h-5 text-primary" />
-                <div>
-                  <p className="text-white font-medium">Fri - Sat</p>
-                  <p className="text-slate-400">10:00 AM - 11:00 PM</p>
-                </div>
+              <li className="flex justify-between">
+                <span className="text-slate-400">Di - Do</span>
+                <span className="text-slate-300">17:00 - 01:00</span>
               </li>
-              <li className="flex items-center gap-3">
-                <Clock className="w-5 h-5 text-primary" />
-                <div>
-                  <p className="text-white font-medium">Sunday</p>
-                  <p className="text-slate-400">11:00 AM - 9:00 PM</p>
-                </div>
+              <li className="flex justify-between">
+                <span className="text-slate-400">Vr - Za</span>
+                <span className="text-slate-300">17:00 - 02:00</span>
+              </li>
+              <li className="flex justify-between">
+                <span className="text-slate-400">Zondag</span>
+                <span className="text-slate-300">17:00 - 22:00</span>
               </li>
             </ul>
           </div>

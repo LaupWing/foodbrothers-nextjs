@@ -37,16 +37,20 @@ export default function ContactPage() {
       },
       info: {
         address: "Adres",
-        addressValue: "Voorbeeldstraat 123\n1234 AB Amsterdam",
+        addressValue: "Overamstelstraat 1\n1091TL Amsterdam",
         phone: "Telefoon",
         phoneValue: "+31 20 123 4567",
         email: "E-mail",
         emailValue: "info@foodbrothers.nl",
         hours: "Openingstijden",
         hoursValue: [
-          { day: "Maandag - Donderdag", time: "12:00 - 22:00" },
-          { day: "Vrijdag", time: "12:00 - 23:00" },
-          { day: "Zaterdag - Zondag", time: "13:00 - 23:00" },
+          { day: "Maandag", time: "Gesloten", closed: true },
+          { day: "Dinsdag", time: "17:00 - 01:00" },
+          { day: "Woensdag", time: "17:00 - 01:00" },
+          { day: "Donderdag", time: "17:00 - 01:00" },
+          { day: "Vrijdag", time: "17:00 - 02:00" },
+          { day: "Zaterdag", time: "17:00 - 02:00" },
+          { day: "Zondag", time: "17:00 - 22:00" },
         ],
       },
     },
@@ -69,16 +73,20 @@ export default function ContactPage() {
       },
       info: {
         address: "Address",
-        addressValue: "Example Street 123\n1234 AB Amsterdam",
+        addressValue: "Overamstelstraat 1\n1091TL Amsterdam",
         phone: "Phone",
         phoneValue: "+31 20 123 4567",
         email: "Email",
         emailValue: "info@foodbrothers.nl",
         hours: "Opening Hours",
         hoursValue: [
-          { day: "Monday - Thursday", time: "12:00 - 22:00" },
-          { day: "Friday", time: "12:00 - 23:00" },
-          { day: "Saturday - Sunday", time: "13:00 - 23:00" },
+          { day: "Monday", time: "Closed", closed: true },
+          { day: "Tuesday", time: "17:00 - 01:00" },
+          { day: "Wednesday", time: "17:00 - 01:00" },
+          { day: "Thursday", time: "17:00 - 01:00" },
+          { day: "Friday", time: "17:00 - 02:00" },
+          { day: "Saturday", time: "17:00 - 02:00" },
+          { day: "Sunday", time: "17:00 - 22:00" },
         ],
       },
     },
@@ -251,10 +259,10 @@ export default function ContactPage() {
                   <div className="flex-1">
                     <h3 className="font-semibold text-foreground mb-3">{c.info.hours}</h3>
                     <div className="space-y-2">
-                      {c.info.hoursValue.map((item, index) => (
+                      {c.info.hoursValue.map((item: { day: string; time: string; closed?: boolean }, index: number) => (
                         <div key={index} className="flex justify-between">
-                          <span className="text-muted-foreground">{item.day}</span>
-                          <span className="text-foreground font-medium">{item.time}</span>
+                          <span className={item.closed ? "text-muted-foreground/60" : "text-muted-foreground"}>{item.day}</span>
+                          <span className={item.closed ? "text-destructive font-medium" : "text-foreground font-medium"}>{item.time}</span>
                         </div>
                       ))}
                     </div>

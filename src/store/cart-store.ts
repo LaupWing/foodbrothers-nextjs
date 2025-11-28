@@ -18,6 +18,7 @@ interface CartStore {
     toppings?: { name: string; price: number }[];
   }) => void;
   removeFromCart: (itemName: string) => void;
+  updateQuantity: (itemName: string, quantity: number) => void;
   clearCart: () => void;
   getItemQuantity: (itemName: string) => number;
   getTotalItems: () => number;
@@ -60,17 +61,22 @@ export const useCartStore = create<CartStore>((set, get) => ({
   },
 
   removeFromCart: (itemName) => {
+    set((state) => ({
+      cart: state.cart.filter((i) => i.name !== itemName),
+    }));
+  },
+
+  updateQuantity: (itemName, quantity) => {
     set((state) => {
-      const existing = state.cart.find((i) => i.name === itemName);
-      if (existing && existing.quantity > 1) {
+      if (quantity <= 0) {
         return {
-          cart: state.cart.map((i) =>
-            i.name === itemName ? { ...i, quantity: i.quantity - 1 } : i
-          ),
+          cart: state.cart.filter((i) => i.name !== itemName),
         };
       }
       return {
-        cart: state.cart.filter((i) => i.name !== itemName),
+        cart: state.cart.map((i) =>
+          i.name === itemName ? { ...i, quantity } : i
+        ),
       };
     });
   },

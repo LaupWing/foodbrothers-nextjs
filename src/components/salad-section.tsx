@@ -8,28 +8,28 @@ export function SaladSection() {
           {/* Content */}
           <div className="order-2 lg:order-1">
             <p className="text-muted-foreground tracking-wide text-sm mb-2">
-              Always Fresh
+              Made Fresh Daily
             </p>
             <h2 className="text-4xl md:text-5xl lg:text-6xl font-serif mb-6">
-              <span className="text-green-500">Fresh</span>
+              <span className="text-primary">Fresh</span>
               <br />
-              <span className="text-foreground font-sans font-bold">Salad</span>
+              <span className="text-foreground font-sans font-bold">Hamburgers</span>
             </h2>
             <p className="text-muted-foreground text-lg mb-8 leading-relaxed">
-              Life is like a burger - the more you add to it, the better it
-              becomes. Our fresh garden salads are made with locally sourced
-              vegetables, crisp greens, and house-made dressings.
+              Every burger starts fresh - never frozen, always made to order.
+              We use 100% premium beef, hand-formed patties, and bake our brioche
+              buns in-house. That's the Food Brothers difference you can taste in every bite.
             </p>
-            <Button className="bg-green-500 hover:bg-green-600 text-white px-8 py-6 rounded-full font-medium">
-              View Salads
+            <Button className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-6 rounded-full font-medium">
+              View Burgers
             </Button>
           </div>
 
           {/* Image */}
           <div className="order-1 lg:order-2 relative">
             <img
-              src="/fresh-healthy-salad-bowl-with-avocado-tomatoes-cuc.jpg"
-              alt="Fresh Salad"
+              src="/gourmet-burger-with-melted-cheese-bacon-and-fresh-.jpg"
+              alt="Fresh Hamburger"
               className="w-full max-w-lg mx-auto rounded-2xl shadow-2xl"
             />
           </div>

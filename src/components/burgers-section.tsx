@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import { DietaryIcons, type DietaryType } from "@/components/dietary-icons";
 import { ProductModal } from "@/components/product-modal";
+import { CheckoutDrawer } from "@/components/checkout-drawer";
 import { useCartStore } from "@/store/cart-store";
 import menuData from "@/data/menu.json";
 
@@ -26,6 +27,7 @@ export function BurgersSection() {
     (typeof featuredBurgers)[0] | null
   >(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
 
   const { addToCart, getItemQuantity } = useCartStore();
 
@@ -113,8 +115,14 @@ export function BurgersSection() {
           }}
           product={selectedProduct}
           onAddToCart={handleAddToCart}
+          onItemAdded={() => setIsCheckoutOpen(true)}
         />
       )}
+
+      <CheckoutDrawer
+        isOpen={isCheckoutOpen}
+        onClose={() => setIsCheckoutOpen(false)}
+      />
     </section>
   );
 }

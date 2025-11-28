@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Plus, Search, ChevronLeft, ChevronRight } from "lucide-react";
 import { DietaryIcons, type DietaryType } from "@/components/dietary-icons";
 import { ProductModal } from "@/components/product-modal";
+import { CheckoutDrawer } from "@/components/checkout-drawer";
 import { useCartStore } from "@/store/cart-store";
 import menuData from "@/data/menu.json";
 
@@ -30,6 +31,7 @@ export function MenuSection() {
   const [searchQuery, setSearchQuery] = useState("");
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
+  const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   const { cart, addToCart, getItemQuantity, getTotalItems, getTotalPrice } =
@@ -359,9 +361,14 @@ export function MenuSection() {
           }}
           product={selectedProduct}
           onAddToCart={handleAddFromModal}
+          onItemAdded={() => setIsCheckoutOpen(true)}
         />
       )}
 
+      <CheckoutDrawer
+        isOpen={isCheckoutOpen}
+        onClose={() => setIsCheckoutOpen(false)}
+      />
     </section>
   );
 }

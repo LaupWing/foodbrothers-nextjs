@@ -6,7 +6,6 @@ import {
   DrawerContent,
   DrawerHeader,
   DrawerTitle,
-  DrawerFooter,
   DrawerClose,
 } from "@/components/ui/drawer";
 import { Button } from "@/components/ui/button";
@@ -167,25 +166,25 @@ export function CheckoutDrawer({ isOpen, onClose }: CheckoutDrawerProps) {
 
         {/* Step 1: Cart Review */}
         {step === "cart" && (
-          <>
-            <div className="overflow-y-auto flex-1 px-4 py-4">
-              <div className="max-w-2xl mx-auto">
-                {cart.length === 0 ? (
-                  <div className="flex flex-col items-center justify-center py-12 text-center">
-                    <ShoppingBag className="w-16 h-16 text-muted-foreground/50 mb-4" />
-                    <h3 className="text-lg font-semibold text-foreground mb-2">
-                      {labels.emptyCart}
-                    </h3>
-                    <p className="text-muted-foreground mb-6">
-                      {labels.emptyCartDesc}
-                    </p>
-                    <DrawerClose asChild>
-                      <Button className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-full px-6">
-                        {labels.continueShopping}
-                      </Button>
-                    </DrawerClose>
-                  </div>
-                ) : (
+          <div className="overflow-y-auto flex-1 px-4 py-4">
+            <div className="max-w-2xl mx-auto">
+              {cart.length === 0 ? (
+                <div className="flex flex-col items-center justify-center py-12 text-center">
+                  <ShoppingBag className="w-16 h-16 text-muted-foreground/50 mb-4" />
+                  <h3 className="text-lg font-semibold text-foreground mb-2">
+                    {labels.emptyCart}
+                  </h3>
+                  <p className="text-muted-foreground mb-6">
+                    {labels.emptyCartDesc}
+                  </p>
+                  <DrawerClose asChild>
+                    <Button className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-full px-6">
+                      {labels.continueShopping}
+                    </Button>
+                  </DrawerClose>
+                </div>
+              ) : (
+                <>
                   <div className="space-y-4">
                     {cart.map((item, index) => (
                       <div
@@ -248,37 +247,35 @@ export function CheckoutDrawer({ isOpen, onClose }: CheckoutDrawerProps) {
                       </div>
                     ))}
                   </div>
-                )}
-              </div>
-            </div>
 
-            {cart.length > 0 && (
-              <DrawerFooter className="border-t border-border max-w-2xl mx-auto w-full">
-                <div className="flex justify-between items-center mb-2">
-                  <span className="text-foreground font-semibold">
-                    {t.checkout.totalAmount} ({totalItems} {t.orderDelivery.items})
-                  </span>
-                  <span className="text-accent text-xl font-bold">
-                    €{totalPrice.toFixed(2).replace(".", ",")}
-                  </span>
-                </div>
-                <Button
-                  className="w-full bg-accent hover:bg-accent/90 text-accent-foreground py-6 rounded-full font-semibold text-lg"
-                  onClick={() => setStep("checkout")}
-                >
-                  {labels.proceedToCheckout}
-                  <ChevronRight className="w-5 h-5 ml-2" />
-                </Button>
-              </DrawerFooter>
-            )}
-          </>
+                  {/* Cart footer */}
+                  <div className="mt-6 pt-4 border-t border-border">
+                    <div className="flex justify-between items-center mb-4">
+                      <span className="text-foreground font-semibold">
+                        {t.checkout.totalAmount} ({totalItems} {t.orderDelivery.items})
+                      </span>
+                      <span className="text-accent text-xl font-bold">
+                        €{totalPrice.toFixed(2).replace(".", ",")}
+                      </span>
+                    </div>
+                    <Button
+                      className="w-full bg-accent hover:bg-accent/90 text-accent-foreground py-6 rounded-full font-semibold text-lg"
+                      onClick={() => setStep("checkout")}
+                    >
+                      {labels.proceedToCheckout}
+                      <ChevronRight className="w-5 h-5 ml-2" />
+                    </Button>
+                  </div>
+                </>
+              )}
+            </div>
+          </div>
         )}
 
         {/* Step 2: Checkout Information */}
         {step === "checkout" && (
-          <>
-            <div className="overflow-y-auto flex-1 px-4 py-4">
-              <div className="max-w-2xl mx-auto">
+          <div className="overflow-y-auto flex-1 px-4 py-4">
+            <div className="max-w-2xl mx-auto">
                 {/* Shipping Method Toggle */}
                 <div className="flex gap-2 mb-6">
                   <button
@@ -710,30 +707,29 @@ export function CheckoutDrawer({ isOpen, onClose }: CheckoutDrawerProps) {
                     </div>
                   </div>
                 )}
-              </div>
-            </div>
 
-            {/* Footer with total and order button */}
-            <DrawerFooter className="border-t border-border max-w-2xl mx-auto w-full">
-              <div className="flex justify-between items-center mb-2">
-                <span className="text-foreground font-semibold">
-                  {t.checkout.totalAmount} ({totalItems} {t.orderDelivery.items})
-                </span>
-                <span className="text-accent text-xl font-bold">
-                  €{totalPrice.toFixed(2).replace(".", ",")}
-                </span>
-              </div>
-              <Button
-                className="w-full bg-accent hover:bg-accent/90 text-accent-foreground py-6 rounded-full font-semibold text-lg"
-                disabled={cart.length === 0}
-              >
-                {t.checkout.placeOrder}
-              </Button>
-              <p className="text-muted-foreground text-xs text-center">
-                {t.orderDelivery.freeDelivery}
-              </p>
-            </DrawerFooter>
-          </>
+                {/* Checkout footer */}
+                <div className="mt-6 pt-4 border-t border-border">
+                  <div className="flex justify-between items-center mb-4">
+                    <span className="text-foreground font-semibold">
+                      {t.checkout.totalAmount} ({totalItems} {t.orderDelivery.items})
+                    </span>
+                    <span className="text-accent text-xl font-bold">
+                      €{totalPrice.toFixed(2).replace(".", ",")}
+                    </span>
+                  </div>
+                  <Button
+                    className="w-full bg-accent hover:bg-accent/90 text-accent-foreground py-6 rounded-full font-semibold text-lg"
+                    disabled={cart.length === 0}
+                  >
+                    {t.checkout.placeOrder}
+                  </Button>
+                  <p className="text-muted-foreground text-xs text-center mt-4">
+                    {t.orderDelivery.freeDelivery}
+                  </p>
+                </div>
+            </div>
+          </div>
         )}
       </DrawerContent>
     </Drawer>

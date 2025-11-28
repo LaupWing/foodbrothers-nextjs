@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { X, Plus, Minus, Info } from "lucide-react"
+import { X, Plus, Minus } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { DietaryIcons, type DietaryType } from "@/components/dietary-icons"
 import { useLanguageStore } from "@/store/language-store"
@@ -98,16 +98,9 @@ export function ProductModal({ isOpen, onClose, product, onAddToCart, onItemAdde
             <p className="text-muted-foreground text-sm mt-2">{product.description}</p>
           </div>
 
-          {/* Article information */}
-          <div className="mx-6 mb-4 p-4 border border-border rounded-xl bg-secondary/30">
-            <div className="flex items-center gap-2 mb-3">
-              <Info className="w-4 h-4 text-muted-foreground" />
-              <span className="text-sm font-medium text-foreground">{t.productModal.articleInfo}</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="text-sm text-muted-foreground">{t.productModal.allergens}</span>
-              <DietaryIcons items={product.dietary} size="sm" />
-            </div>
+          {/* Dietary icons */}
+          <div className="mx-6 mb-4">
+            <DietaryIcons items={product.dietary} size="sm" />
           </div>
 
           {/* Toppings section */}

@@ -5,7 +5,7 @@ export function HeroSection() {
   return (
     <section
       id="home"
-      className="relative min-h-screen flex items-center pt-16 md:pt-20 overflow-hidden bg-gradient-to-br from-sky-50 via-white to-orange-50"
+      className="relative min-h-screen flex items-center pt-16 md:pt-20 pb-40 md:pb-0 overflow-hidden bg-gradient-to-br from-sky-50 via-white to-orange-50"
     >
       {/* Decorative circles */}
       <div className="absolute top-20 right-10 w-72 h-72 bg-primary/10 rounded-full blur-3xl" />

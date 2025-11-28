@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Plus, Minus, Search, ChevronLeft, ChevronRight } from "lucide-react";
 import { DietaryIcons, type DietaryType } from "@/components/dietary-icons";
@@ -28,12 +28,53 @@ export function MenuSection() {
   >(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(true);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
 
-  const { cart, addToCart, removeFromCart, getItemQuantity, getTotalItems, getTotalPrice } =
-    useCartStore();
+  const {
+    cart,
+    addToCart,
+    removeFromCart,
+    getItemQuantity,
+    getTotalItems,
+    getTotalPrice,
+  } = useCartStore();
 
   const totalItems = getTotalItems();
   const totalPrice = getTotalPrice();
+
+  const updateScrollButtons = () => {
+    if (scrollContainerRef.current) {
+      const { scrollLeft, scrollWidth, clientWidth } =
+        scrollContainerRef.current;
+      setCanScrollLeft(scrollLeft > 0);
+      setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 1);
+    }
+  };
+
+  useEffect(() => {
+    const scrollContainer = scrollContainerRef.current;
+    if (scrollContainer) {
+      updateScrollButtons();
+      scrollContainer.addEventListener("scroll", updateScrollButtons);
+      window.addEventListener("resize", updateScrollButtons);
+      return () => {
+        scrollContainer.removeEventListener("scroll", updateScrollButtons);
+        window.removeEventListener("resize", updateScrollButtons);
+      };
+    }
+  }, []);
+
+  const scrollCategories = (direction: "left" | "right") => {
+    if (scrollContainerRef.current) {
+      const scrollAmount = 200;
+      scrollContainerRef.current.scrollBy({
+        left: direction === "left" ? -scrollAmount : scrollAmount,
+        behavior: "smooth",
+      });
+    }
+  };
 
   const handleProductClick = (item: (typeof menuItems)["grill-beef"][0]) => {
     if (item.hasCustomization) {
@@ -95,10 +136,23 @@ export function MenuSection() {
               />
             </div>
 
-            {/* Category tabs - scrollable */}
-            <div className="mb-6 -mx-4 px-4 grid">
-              <div className="overflow-x-auto pb-2 max-w-full">
-                <div className="flex gap-2 w-fit">
+            {/* Category tabs - scrollable with chevrons */}
+            <div className="mb-6 relative grid">
+              {canScrollLeft && (
+                <button
+                  onClick={() => scrollCategories("left")}
+                  className="absolute left-0 top-1/2 -translate-y-1/2 z-10 w-8 h-8 bg-background/90 backdrop-blur-sm rounded-full shadow-md flex items-center justify-center hover:bg-muted transition-colors"
+                >
+                  <ChevronLeft className="w-5 h-5 text-foreground" />
+                </button>
+              )}
+              <div
+                ref={scrollContainerRef}
+                className={`overflow-x-auto scrollbar-hide ${
+                  canScrollLeft ? "ml-10" : ""
+                } ${canScrollRight ? "mr-10" : ""}`}
+              >
+                <div className="flex gap-2 w-max py-1">
                   {menuCategories.map((category) => (
                     <button
                       key={category.id}
@@ -117,6 +171,14 @@ export function MenuSection() {
                   ))}
                 </div>
               </div>
+              {canScrollRight && (
+                <button
+                  onClick={() => scrollCategories("right")}
+                  className="absolute right-0 top-1/2 -translate-y-1/2 z-10 w-8 h-8 bg-background/90 backdrop-blur-sm rounded-full shadow-md flex items-center justify-center hover:bg-muted transition-colors"
+                >
+                  <ChevronRight className="w-5 h-5 text-foreground" />
+                </button>
+              )}
             </div>
 
             {/* Menu Items */}

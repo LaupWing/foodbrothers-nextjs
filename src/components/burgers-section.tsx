@@ -7,6 +7,7 @@ import { DietaryIcons, type DietaryType } from "@/components/dietary-icons";
 import { ProductModal } from "@/components/product-modal";
 import { CheckoutDrawer } from "@/components/checkout-drawer";
 import { useCartStore } from "@/store/cart-store";
+import { useLanguageStore } from "@/store/language-store";
 import menuData from "@/data/menu.json";
 
 // Get featured burgers from menu data
@@ -30,6 +31,7 @@ export function BurgersSection() {
   const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
 
   const { addToCart, getItemQuantity } = useCartStore();
+  const { t } = useLanguageStore();
 
   const handleProductClick = (burger: (typeof featuredBurgers)[0]) => {
     setSelectedProduct(burger);
@@ -58,10 +60,10 @@ export function BurgersSection() {
       <div className="container mx-auto px-4 relative z-10">
         <div className="text-center mb-16">
           <p className="text-white/70 tracking-wide text-sm mb-2">
-            Signature Collection
+            {t.burgers.tagline}
           </p>
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-serif text-white">
-            Our Burgers
+            {t.burgers.title}
           </h2>
         </div>
 

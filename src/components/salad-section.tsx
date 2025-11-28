@@ -1,6 +1,11 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
+import { useLanguageStore } from "@/store/language-store";
 
 export function SaladSection() {
+  const { t } = useLanguageStore();
+
   return (
     <section className="py-20 bg-secondary relative overflow-hidden">
       <div className="container mx-auto px-4">
@@ -8,20 +13,18 @@ export function SaladSection() {
           {/* Content */}
           <div className="order-2 lg:order-1">
             <p className="text-muted-foreground tracking-wide text-sm mb-2">
-              Made Fresh Daily
+              {t.freshBurgers.tagline}
             </p>
             <h2 className="text-4xl md:text-5xl lg:text-6xl font-serif mb-6">
-              <span className="text-primary">Fresh</span>
+              <span className="text-primary">{t.freshBurgers.title}</span>
               <br />
-              <span className="text-foreground font-sans font-bold">Hamburgers</span>
+              <span className="text-foreground font-sans font-bold">{t.freshBurgers.subtitle}</span>
             </h2>
             <p className="text-muted-foreground text-lg mb-8 leading-relaxed">
-              Every burger starts fresh - never frozen, always made to order.
-              We use 100% premium beef, hand-formed patties, and bake our brioche
-              buns in-house. That's the Food Brothers difference you can taste in every bite.
+              {t.freshBurgers.description}
             </p>
             <Button className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-6 rounded-full font-medium">
-              View Burgers
+              {t.freshBurgers.button}
             </Button>
           </div>
 

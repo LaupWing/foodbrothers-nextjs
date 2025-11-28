@@ -5,12 +5,15 @@ import Link from "next/link";
 import Image from "next/image";
 import { Menu, X, ShoppingCart } from "lucide-react";
 import { useCartStore } from "@/store/cart-store";
+import { useLanguageStore } from "@/store/language-store";
 import { CheckoutDrawer } from "@/components/checkout-drawer";
+import { LanguageToggle } from "@/components/language-toggle";
 
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
   const { getTotalItems } = useCartStore();
+  const { t } = useLanguageStore();
   const totalItems = getTotalItems();
 
   return (
@@ -47,40 +50,45 @@ export function Header() {
                 href="#home"
                 className="text-foreground hover:text-primary transition-colors text-sm font-medium"
               >
-                Home
+                {t.header.home}
               </Link>
               <Link
                 href="#menu"
                 className="text-foreground hover:text-primary transition-colors text-sm font-medium"
               >
-                Our Menu
+                {t.header.ourMenu}
               </Link>
               <Link
                 href="#about"
                 className="text-foreground hover:text-primary transition-colors text-sm font-medium"
               >
-                About Us
+                {t.header.aboutUs}
               </Link>
               <Link
                 href="#contact"
                 className="text-foreground hover:text-primary transition-colors text-sm font-medium"
               >
-                Contact
+                {t.header.contact}
               </Link>
             </nav>
 
-            {/* Shopping cart - right side */}
-            <button
-              onClick={() => setIsCheckoutOpen(true)}
-              className="text-foreground hover:text-primary relative"
-            >
-              <ShoppingCart className="w-6 h-6 md:w-7 md:h-7" />
-              {totalItems > 0 && (
-                <span className="absolute -top-3 -right-3 w-5 h-5 bg-accent text-accent-foreground text-xs rounded-full flex items-center justify-center">
-                  {totalItems}
-                </span>
-              )}
-            </button>
+            {/* Right side - Language toggle and cart */}
+            <div className="flex items-center gap-4">
+              <div className="hidden md:block">
+                <LanguageToggle />
+              </div>
+              <button
+                onClick={() => setIsCheckoutOpen(true)}
+                className="text-foreground hover:text-primary relative"
+              >
+                <ShoppingCart className="w-6 h-6 md:w-7 md:h-7" />
+                {totalItems > 0 && (
+                  <span className="absolute -top-3 -right-3 w-5 h-5 bg-accent text-accent-foreground text-xs rounded-full flex items-center justify-center">
+                    {totalItems}
+                  </span>
+                )}
+              </button>
+            </div>
           </div>
 
           {/* Mobile Navigation */}
@@ -92,29 +100,32 @@ export function Header() {
                   className="text-foreground hover:text-primary transition-colors text-sm font-medium"
                   onClick={() => setIsMenuOpen(false)}
                 >
-                  Home
+                  {t.header.home}
                 </Link>
                 <Link
                   href="#menu"
                   className="text-foreground hover:text-primary transition-colors text-sm font-medium"
                   onClick={() => setIsMenuOpen(false)}
                 >
-                  Our Menu
+                  {t.header.ourMenu}
                 </Link>
                 <Link
                   href="#about"
                   className="text-foreground hover:text-primary transition-colors text-sm font-medium"
                   onClick={() => setIsMenuOpen(false)}
                 >
-                  About Us
+                  {t.header.aboutUs}
                 </Link>
                 <Link
                   href="#contact"
                   className="text-foreground hover:text-primary transition-colors text-sm font-medium"
                   onClick={() => setIsMenuOpen(false)}
                 >
-                  Contact
+                  {t.header.contact}
                 </Link>
+                <div className="pt-2">
+                  <LanguageToggle />
+                </div>
               </nav>
             </div>
           )}

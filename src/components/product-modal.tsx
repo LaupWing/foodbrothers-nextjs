@@ -4,6 +4,7 @@ import { useState } from "react"
 import { X, Plus, Minus, Info } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { DietaryIcons, type DietaryType } from "@/components/dietary-icons"
+import { useLanguageStore } from "@/store/language-store"
 
 interface Topping {
   name: string
@@ -28,6 +29,7 @@ interface ProductModalProps {
 export function ProductModal({ isOpen, onClose, product, onAddToCart, onItemAdded }: ProductModalProps) {
   const [quantity, setQuantity] = useState(1)
   const [selectedToppings, setSelectedToppings] = useState<Topping[]>([])
+  const { t } = useLanguageStore()
 
   if (!isOpen) return null
 
@@ -100,17 +102,17 @@ export function ProductModal({ isOpen, onClose, product, onAddToCart, onItemAdde
           <div className="mx-6 mb-4 p-4 border border-border rounded-xl bg-secondary/30">
             <div className="flex items-center gap-2 mb-3">
               <Info className="w-4 h-4 text-muted-foreground" />
-              <span className="text-sm font-medium text-foreground">Artikelinformatie</span>
+              <span className="text-sm font-medium text-foreground">{t.productModal.articleInfo}</span>
             </div>
             <div className="flex items-center gap-2">
-              <span className="text-sm text-muted-foreground">Allergenen:</span>
+              <span className="text-sm text-muted-foreground">{t.productModal.allergens}</span>
               <DietaryIcons items={product.dietary} size="sm" />
             </div>
           </div>
 
           {/* Toppings section */}
           <div className="px-6 pb-6">
-            <h3 className="text-lg font-semibold text-foreground mb-4">1) Toppings</h3>
+            <h3 className="text-lg font-semibold text-foreground mb-4">1) {t.productModal.toppings}</h3>
             <div className="divide-y divide-border">
               {defaultToppings.map((topping) => {
                 const isSelected = selectedToppings.some((t) => t.name === topping.name)
@@ -168,7 +170,7 @@ export function ProductModal({ isOpen, onClose, product, onAddToCart, onItemAdde
             onClick={handleAddToCart}
             className="flex-1 bg-foreground hover:bg-foreground/90 text-background py-6 rounded-full font-semibold text-base"
           >
-            Toevoegen €{totalPrice.toFixed(2).replace(".", ",")}
+            {t.productModal.add} €{totalPrice.toFixed(2).replace(".", ",")}
           </Button>
         </div>
       </div>

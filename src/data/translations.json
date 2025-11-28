@@ -1,0 +1,200 @@
+{
+  "nl": {
+    "header": {
+      "home": "Home",
+      "ourMenu": "Ons Menu",
+      "aboutUs": "Over Ons",
+      "contact": "Contact"
+    },
+    "hero": {
+      "tagline": "Premium Halal Burgers",
+      "title": "Food Brothers",
+      "subtitle": "Authentieke smaken, verse ingrediënten",
+      "orderNow": "Bestel Nu",
+      "viewMenu": "Bekijk Menu"
+    },
+    "burgers": {
+      "tagline": "Signature Collectie",
+      "title": "Onze Burgers"
+    },
+    "sauce": {
+      "tagline": "Het Geheim",
+      "title": "Huisgemaakte Premium",
+      "subtitle": "Sauzen",
+      "description": "Wat maakt onze burgers onvergetelijk? Onze handgemaakte sauzen, elke dag vers bereid in huis. Van onze romige Dutch Burger Saus tot de vurige Marokkaanse Harissa Mayo - elk recept is een streng bewaakt familiegeheim.",
+      "button": "Ontdek Meer",
+      "badge": "Huisgemaakt\nDagelijks"
+    },
+    "freshBurgers": {
+      "tagline": "Dagelijks Vers Gemaakt",
+      "title": "Verse",
+      "subtitle": "Hamburgers",
+      "description": "Elke burger begint vers - nooit bevroren, altijd op bestelling gemaakt. We gebruiken 100% premium rundvlees, met de hand gevormde patties, en bakken onze brioche broodjes in huis. Dat is het Food Brothers verschil dat je in elke hap proeft.",
+      "button": "Bekijk Burgers"
+    },
+    "menu": {
+      "tagline": "Maak Het Op Jouw Manier",
+      "title": "Ons Menu",
+      "subtitle": "Al onze Black Angus, Beef en Chicken burgers zijn 100% procent halal en afkomstig uit bio vrije uitloop",
+      "search": "Zoeken...",
+      "customize": "Aanpassen"
+    },
+    "orderDelivery": {
+      "title": "Bezorging Bestellen",
+      "subtitle": "Snelle bezorging aan je deur",
+      "yourOrder": "Jouw Bestelling:",
+      "total": "Totaal",
+      "items": "items",
+      "orderOnline": "Online Bestellen",
+      "freeDelivery": "Gratis bezorging bij bestellingen boven €30"
+    },
+    "checkout": {
+      "title": "Afrekenen",
+      "delivery": "Bezorgen",
+      "pickup": "Afhalen",
+      "deliveryAddress": "Bezorgadres",
+      "street": "Straat en huisnummer",
+      "postalCode": "Postcode",
+      "city": "Stad",
+      "personalInfo": "Persoonlijke gegevens",
+      "firstName": "Voornaam",
+      "lastName": "Achternaam",
+      "email": "E-mail",
+      "phone": "Telefoon",
+      "deliveryTime": "Bezorgtijd",
+      "asap": "Zo snel mogelijk",
+      "scheduleTime": "Tijd inplannen",
+      "paymentMethod": "Betaalmethode",
+      "ideal": "iDEAL",
+      "cash": "Contant",
+      "card": "Pinpas",
+      "discountCode": "Kortingscode",
+      "enterCode": "Voer code in",
+      "apply": "Toepassen",
+      "orderSummary": "Besteloverzicht",
+      "subtotal": "Subtotaal",
+      "deliveryFee": "Bezorgkosten",
+      "free": "Gratis",
+      "totalAmount": "Totaalbedrag",
+      "placeOrder": "Bestelling Plaatsen"
+    },
+    "productModal": {
+      "articleInfo": "Artikelinformatie",
+      "allergens": "Allergenen:",
+      "toppings": "Toppings",
+      "add": "Toevoegen"
+    },
+    "footer": {
+      "description": "Premium halal burgers gemaakt met verse ingrediënten en liefde.",
+      "quickLinks": "Snelle Links",
+      "openingHours": "Openingstijden",
+      "weekdays": "Ma - Do: 12:00 - 22:00",
+      "friday": "Vrijdag: 12:00 - 23:00",
+      "weekend": "Za - Zo: 13:00 - 23:00",
+      "contact": "Contact",
+      "rights": "Alle rechten voorbehouden."
+    },
+    "floatingCart": {
+      "items": "items"
+    }
+  },
+  "en": {
+    "header": {
+      "home": "Home",
+      "ourMenu": "Our Menu",
+      "aboutUs": "About Us",
+      "contact": "Contact"
+    },
+    "hero": {
+      "tagline": "Premium Halal Burgers",
+      "title": "Food Brothers",
+      "subtitle": "Authentic flavors, fresh ingredients",
+      "orderNow": "Order Now",
+      "viewMenu": "View Menu"
+    },
+    "burgers": {
+      "tagline": "Signature Collection",
+      "title": "Our Burgers"
+    },
+    "sauce": {
+      "tagline": "The Secret",
+      "title": "Homemade Premium",
+      "subtitle": "Sauces",
+      "description": "What makes our burgers unforgettable? Our handcrafted sauces, made fresh in-house every single day. From our creamy Dutch Burger Sauce to the fiery Moroccan Harissa Mayo - each recipe is a closely guarded family secret.",
+      "button": "Explore More",
+      "badge": "Homemade\nDaily"
+    },
+    "freshBurgers": {
+      "tagline": "Made Fresh Daily",
+      "title": "Fresh",
+      "subtitle": "Hamburgers",
+      "description": "Every burger starts fresh - never frozen, always made to order. We use 100% premium beef, hand-formed patties, and bake our brioche buns in-house. That's the Food Brothers difference you can taste in every bite.",
+      "button": "View Burgers"
+    },
+    "menu": {
+      "tagline": "Make It Your Way",
+      "title": "Our Menu",
+      "subtitle": "All our Black Angus, Beef and Chicken burgers are 100% halal and from organic free-range",
+      "search": "Search...",
+      "customize": "Customize"
+    },
+    "orderDelivery": {
+      "title": "Order Delivery",
+      "subtitle": "Fast delivery to your doorstep",
+      "yourOrder": "Your Order:",
+      "total": "Total",
+      "items": "items",
+      "orderOnline": "Order Online",
+      "freeDelivery": "Free delivery on orders over €30"
+    },
+    "checkout": {
+      "title": "Checkout",
+      "delivery": "Delivery",
+      "pickup": "Pickup",
+      "deliveryAddress": "Delivery Address",
+      "street": "Street and house number",
+      "postalCode": "Postal code",
+      "city": "City",
+      "personalInfo": "Personal Information",
+      "firstName": "First name",
+      "lastName": "Last name",
+      "email": "Email",
+      "phone": "Phone",
+      "deliveryTime": "Delivery Time",
+      "asap": "As soon as possible",
+      "scheduleTime": "Schedule time",
+      "paymentMethod": "Payment Method",
+      "ideal": "iDEAL",
+      "cash": "Cash",
+      "card": "Card",
+      "discountCode": "Discount Code",
+      "enterCode": "Enter code",
+      "apply": "Apply",
+      "orderSummary": "Order Summary",
+      "subtotal": "Subtotal",
+      "deliveryFee": "Delivery fee",
+      "free": "Free",
+      "totalAmount": "Total Amount",
+      "placeOrder": "Place Order"
+    },
+    "productModal": {
+      "articleInfo": "Article Information",
+      "allergens": "Allergens:",
+      "toppings": "Toppings",
+      "add": "Add"
+    },
+    "footer": {
+      "description": "Premium halal burgers made with fresh ingredients and love.",
+      "quickLinks": "Quick Links",
+      "openingHours": "Opening Hours",
+      "weekdays": "Mon - Thu: 12:00 - 22:00",
+      "friday": "Friday: 12:00 - 23:00",
+      "weekend": "Sat - Sun: 13:00 - 23:00",
+      "contact": "Contact",
+      "rights": "All rights reserved."
+    },
+    "floatingCart": {
+      "items": "items"
+    }
+  }
+}

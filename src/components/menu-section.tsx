@@ -7,6 +7,7 @@ import { DietaryIcons, type DietaryType } from "@/components/dietary-icons";
 import { ProductModal } from "@/components/product-modal";
 import { CheckoutDrawer } from "@/components/checkout-drawer";
 import { useCartStore } from "@/store/cart-store";
+import { useLanguageStore } from "@/store/language-store";
 import menuData from "@/data/menu.json";
 
 const menuCategories = menuData.categories;
@@ -36,6 +37,7 @@ export function MenuSection() {
 
   const { cart, addToCart, getItemQuantity, getTotalItems, getTotalPrice } =
     useCartStore();
+  const { t } = useLanguageStore();
 
   const totalItems = getTotalItems();
   const totalPrice = getTotalPrice();
@@ -111,14 +113,13 @@ export function MenuSection() {
           <div className="lg:col-span-2">
             <div className="mb-8">
               <p className="text-muted-foreground tracking-wide text-sm mb-2">
-                Make It Your Way
+                {t.menu.tagline}
               </p>
               <h2 className="text-4xl md:text-5xl font-serif text-primary">
-                Our Menu
+                {t.menu.title}
               </h2>
               <p className="text-muted-foreground mt-2">
-                Al onze Black Angus, Beef en Chicken burgers zijn 100% procent
-                halal en afkomstig uit bio vrije uitloop
+                {t.menu.subtitle}
               </p>
             </div>
 
@@ -127,7 +128,7 @@ export function MenuSection() {
               <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
               <input
                 type="text"
-                placeholder="Zoeken..."
+                placeholder={t.menu.search}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="w-full pl-12 pr-4 py-3 bg-secondary rounded-full border-0 focus:ring-2 focus:ring-primary focus:outline-none text-foreground"
@@ -230,7 +231,7 @@ export function MenuSection() {
                             </h3>
                             {item.hasCustomization && (
                               <span className="text-xs text-primary bg-primary/10 px-2 py-0.5 rounded-full">
-                                Customize
+                                {t.menu.customize}
                               </span>
                             )}
                           </div>
@@ -274,17 +275,17 @@ export function MenuSection() {
           <div>
             <div className="bg-secondary rounded-2xl p-6 sticky top-24">
               <h3 className="text-2xl font-serif text-primary mb-2">
-                Order Delivery
+                {t.orderDelivery.title}
               </h3>
               <p className="text-muted-foreground mb-6">
-                Fast delivery to your doorstep
+                {t.orderDelivery.subtitle}
               </p>
 
               <div className="mb-6">
                 {cart.length > 0 ? (
                   <div className="space-y-3 max-h-64 overflow-y-auto">
                     <h4 className="text-foreground font-semibold">
-                      Your Order:
+                      {t.orderDelivery.yourOrder}
                     </h4>
                     {cart.map((item, index) => (
                       <div key={index} className="flex items-start gap-3">
@@ -321,7 +322,7 @@ export function MenuSection() {
                     <div className="border-t border-border pt-2 mt-2">
                       <div className="flex justify-between font-bold">
                         <span className="text-foreground">
-                          Total ({totalItems} items)
+                          {t.orderDelivery.total} ({totalItems} {t.orderDelivery.items})
                         </span>
                         <span className="text-accent">
                           €{totalPrice.toFixed(2).replace(".", ",")}
@@ -342,11 +343,11 @@ export function MenuSection() {
                 className="w-full bg-accent hover:bg-accent/90 text-accent-foreground py-6 rounded-full font-medium"
                 disabled={cart.length === 0}
               >
-                Order Online
+                {t.orderDelivery.orderOnline}
               </Button>
 
               <p className="text-muted-foreground text-xs text-center mt-4">
-                Free delivery on orders over €30
+                {t.orderDelivery.freeDelivery}
               </p>
             </div>
           </div>

@@ -22,6 +22,7 @@ import {
   ChevronRight,
 } from "lucide-react";
 import { useCartStore } from "@/store/cart-store";
+import { useLanguageStore } from "@/store/language-store";
 
 interface CheckoutDrawerProps {
   isOpen: boolean;
@@ -67,6 +68,7 @@ export function CheckoutDrawer({ isOpen, onClose }: CheckoutDrawerProps) {
   });
 
   const { cart, getTotalPrice, getTotalItems } = useCartStore();
+  const { t } = useLanguageStore();
   const totalPrice = getTotalPrice();
   const totalItems = getTotalItems();
 
@@ -114,7 +116,7 @@ export function CheckoutDrawer({ isOpen, onClose }: CheckoutDrawerProps) {
               </button>
             </DrawerClose>
             <DrawerTitle className="text-2xl font-serif text-primary">
-              Afrekenen
+              {t.checkout.title}
             </DrawerTitle>
           </div>
         </DrawerHeader>
@@ -138,7 +140,7 @@ export function CheckoutDrawer({ isOpen, onClose }: CheckoutDrawerProps) {
                 <span
                   className={`font-medium ${shippingMethod === "delivery" ? "text-primary" : "text-foreground"}`}
                 >
-                  Bezorgen
+                  {t.checkout.delivery}
                 </span>
               </button>
               <button
@@ -155,7 +157,7 @@ export function CheckoutDrawer({ isOpen, onClose }: CheckoutDrawerProps) {
                 <span
                   className={`font-medium ${shippingMethod === "pickup" ? "text-primary" : "text-foreground"}`}
                 >
-                  Afhalen
+                  {t.checkout.pickup}
                 </span>
               </button>
             </div>
@@ -173,7 +175,7 @@ export function CheckoutDrawer({ isOpen, onClose }: CheckoutDrawerProps) {
                     </div>
                     <div className="text-left">
                       <h3 className="font-semibold text-foreground">
-                        Bezorgadres
+                        {t.checkout.deliveryAddress}
                       </h3>
                       {getSectionPreview("address") ? (
                         <p className="text-sm text-muted-foreground">
@@ -268,7 +270,7 @@ export function CheckoutDrawer({ isOpen, onClose }: CheckoutDrawerProps) {
                   </div>
                   <div className="text-left">
                     <h3 className="font-semibold text-foreground">
-                      Persoonlijke gegevens
+                      {t.checkout.personalInfo}
                     </h3>
                     {getSectionPreview("personal") ? (
                       <p className="text-sm text-muted-foreground">
@@ -379,7 +381,7 @@ export function CheckoutDrawer({ isOpen, onClose }: CheckoutDrawerProps) {
                   </div>
                   <div className="text-left">
                     <h3 className="font-semibold text-foreground">
-                      {shippingMethod === "delivery" ? "Bezorgtijd" : "Afhaaltijd"}
+                      {t.checkout.deliveryTime}
                     </h3>
                     <p className="text-sm text-muted-foreground">
                       {formData.deliveryTime || "Selecteer tijdstip"}
@@ -428,10 +430,10 @@ export function CheckoutDrawer({ isOpen, onClose }: CheckoutDrawerProps) {
                   </div>
                   <div className="text-left">
                     <h3 className="font-semibold text-foreground">
-                      Betaalmethode
+                      {t.checkout.paymentMethod}
                     </h3>
                     <p className="text-sm text-muted-foreground">
-                      {formData.paymentMethod === "ideal" ? "iDeal" : "Contant"}
+                      {formData.paymentMethod === "ideal" ? t.checkout.ideal : t.checkout.cash}
                     </p>
                   </div>
                 </div>
@@ -454,7 +456,7 @@ export function CheckoutDrawer({ isOpen, onClose }: CheckoutDrawerProps) {
                           alt="iDeal"
                           className="w-8 h-8"
                         />
-                        <span className="font-medium text-foreground">iDeal</span>
+                        <span className="font-medium text-foreground">{t.checkout.ideal}</span>
                       </div>
                       <input
                         type="radio"
@@ -471,10 +473,10 @@ export function CheckoutDrawer({ isOpen, onClose }: CheckoutDrawerProps) {
                       <div className="flex items-center gap-3">
                         <img
                           src="https://cdn-03.ultimatumapp.com/images/order-icons/cash.svg"
-                          alt="Contant"
+                          alt="Cash"
                           className="w-8 h-8"
                         />
-                        <span className="font-medium text-foreground">Contant</span>
+                        <span className="font-medium text-foreground">{t.checkout.cash}</span>
                       </div>
                       <input
                         type="radio"
@@ -502,11 +504,11 @@ export function CheckoutDrawer({ isOpen, onClose }: CheckoutDrawerProps) {
                     name="discountCode"
                     value={formData.discountCode}
                     onChange={handleInputChange}
-                    placeholder="Kortingscode"
+                    placeholder={t.checkout.discountCode}
                     className="flex-1 px-4 py-3 bg-background rounded-lg border border-border focus:ring-2 focus:ring-primary focus:outline-none"
                   />
                   <Button className="bg-primary hover:bg-primary/90 text-primary-foreground px-6">
-                    OK
+                    {t.checkout.apply}
                   </Button>
                 </div>
               </div>
@@ -516,7 +518,7 @@ export function CheckoutDrawer({ isOpen, onClose }: CheckoutDrawerProps) {
             {cart.length > 0 && (
               <div className="mb-4 bg-secondary rounded-xl p-4">
                 <h3 className="font-semibold text-foreground mb-3">
-                  Jouw bestelling
+                  {t.checkout.orderSummary}
                 </h3>
                 <div className="space-y-2">
                   {cart.map((item, index) => (
@@ -558,7 +560,7 @@ export function CheckoutDrawer({ isOpen, onClose }: CheckoutDrawerProps) {
         <DrawerFooter className="border-t border-border max-w-2xl mx-auto w-full">
           <div className="flex justify-between items-center mb-2">
             <span className="text-foreground font-semibold">
-              Totaal ({totalItems} items)
+              {t.checkout.totalAmount} ({totalItems} {t.orderDelivery.items})
             </span>
             <span className="text-accent text-xl font-bold">
               €{totalPrice.toFixed(2).replace(".", ",")}
@@ -568,10 +570,10 @@ export function CheckoutDrawer({ isOpen, onClose }: CheckoutDrawerProps) {
             className="w-full bg-accent hover:bg-accent/90 text-accent-foreground py-6 rounded-full font-semibold text-lg"
             disabled={cart.length === 0}
           >
-            Bestelling plaatsen
+            {t.checkout.placeOrder}
           </Button>
           <p className="text-muted-foreground text-xs text-center">
-            Gratis bezorging bij bestellingen boven €30
+            {t.orderDelivery.freeDelivery}
           </p>
         </DrawerFooter>
       </DrawerContent>

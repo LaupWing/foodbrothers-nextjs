@@ -361,6 +361,7 @@ export function MenuSection() {
           onAddToCart={handleAddFromModal}
         />
       )}
+
     </section>
   );
 }

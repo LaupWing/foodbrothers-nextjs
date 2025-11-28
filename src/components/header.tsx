@@ -115,29 +115,35 @@ export function Header() {
           </div>
 
           {/* Mobile Navigation */}
-          {isMenuOpen && (
-            <div className="md:hidden py-4 border-t border-border">
-              <nav className="flex flex-col gap-4">
-                {navItems.map((item) => (
-                  <Link
-                    key={item.href}
-                    href={item.href}
-                    className={`transition-colors text-sm font-medium ${
-                      isActive(item.href)
-                        ? "text-primary"
-                        : "text-foreground hover:text-primary"
-                    }`}
-                    onClick={() => setIsMenuOpen(false)}
-                  >
-                    {t.header[item.labelKey]}
-                  </Link>
-                ))}
-                <div className="pt-2 flex">
-                  <LanguageToggle />
-                </div>
-              </nav>
+          <div
+            className={`md:hidden grid transition-all duration-300 ease-in-out ${
+              isMenuOpen ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
+            }`}
+          >
+            <div className="overflow-hidden">
+              <div className="py-4 border-t border-border">
+                <nav className="flex flex-col gap-4">
+                  {navItems.map((item) => (
+                    <Link
+                      key={item.href}
+                      href={item.href}
+                      className={`transition-colors text-sm font-medium ${
+                        isActive(item.href)
+                          ? "text-primary"
+                          : "text-foreground hover:text-primary"
+                      }`}
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      {t.header[item.labelKey]}
+                    </Link>
+                  ))}
+                  <div className="pt-2 flex">
+                    <LanguageToggle />
+                  </div>
+                </nav>
+              </div>
             </div>
-          )}
+          </div>
         </div>
       </header>
 

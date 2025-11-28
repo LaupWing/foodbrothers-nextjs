@@ -7,6 +7,7 @@ import {
   DrawerHeader,
   DrawerTitle,
   DrawerClose,
+  DrawerFooter,
 } from "@/components/ui/drawer";
 import { Button } from "@/components/ui/button";
 import {
@@ -93,92 +94,92 @@ export function CheckoutDrawer({ isOpen, onClose }: CheckoutDrawerProps) {
                 </DrawerClose>
               </div>
             ) : (
-              <>
-                <div className="space-y-4">
-                  {cart.map((item, index) => (
-                    <div
-                      key={index}
-                      className="bg-secondary rounded-xl p-4 flex gap-4"
-                    >
-                      <div className="relative shrink-0">
-                        <img
-                          src={item.image || "/placeholder.svg"}
-                          alt={item.name}
-                          className="w-20 h-20 object-cover rounded-lg"
-                        />
+              <div className="space-y-4">
+                {cart.map((item, index) => (
+                  <div
+                    key={index}
+                    className="bg-secondary rounded-xl p-4 flex gap-4"
+                  >
+                    <div className="relative shrink-0">
+                      <img
+                        src={item.image || "/placeholder.svg"}
+                        alt={item.name}
+                        className="w-20 h-20 object-cover rounded-lg"
+                      />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex justify-between items-start gap-2">
+                        <div>
+                          <h3 className="font-semibold text-foreground">
+                            {item.name}
+                          </h3>
+                          {item.toppings && item.toppings.length > 0 && (
+                            <p className="text-xs text-muted-foreground mt-1">
+                              + {item.toppings.map((t) => t.name).join(", ")}
+                            </p>
+                          )}
+                        </div>
+                        <button
+                          onClick={() => removeFromCart(item.name)}
+                          className="text-muted-foreground hover:text-destructive transition-colors p-1"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </button>
                       </div>
-                      <div className="flex-1 min-w-0">
-                        <div className="flex justify-between items-start gap-2">
-                          <div>
-                            <h3 className="font-semibold text-foreground">
-                              {item.name}
-                            </h3>
-                            {item.toppings && item.toppings.length > 0 && (
-                              <p className="text-xs text-muted-foreground mt-1">
-                                + {item.toppings.map((t) => t.name).join(", ")}
-                              </p>
-                            )}
-                          </div>
+                      <div className="flex justify-between items-center mt-3">
+                        <div className="flex items-center gap-2">
                           <button
-                            onClick={() => removeFromCart(item.name)}
-                            className="text-muted-foreground hover:text-destructive transition-colors p-1"
+                            onClick={() =>
+                              updateQuantity(item.name, item.quantity - 1)
+                            }
+                            className="w-8 h-8 rounded-full border border-border flex items-center justify-center hover:bg-muted transition-colors"
                           >
-                            <Trash2 className="w-4 h-4" />
+                            <Minus className="w-4 h-4 text-foreground" />
+                          </button>
+                          <span className="w-8 text-center font-semibold text-foreground">
+                            {item.quantity}
+                          </span>
+                          <button
+                            onClick={() =>
+                              updateQuantity(item.name, item.quantity + 1)
+                            }
+                            className="w-8 h-8 rounded-full border border-border flex items-center justify-center hover:bg-muted transition-colors"
+                          >
+                            <Plus className="w-4 h-4 text-foreground" />
                           </button>
                         </div>
-                        <div className="flex justify-between items-center mt-3">
-                          <div className="flex items-center gap-2">
-                            <button
-                              onClick={() =>
-                                updateQuantity(item.name, item.quantity - 1)
-                              }
-                              className="w-8 h-8 rounded-full border border-border flex items-center justify-center hover:bg-muted transition-colors"
-                            >
-                              <Minus className="w-4 h-4 text-foreground" />
-                            </button>
-                            <span className="w-8 text-center font-semibold text-foreground">
-                              {item.quantity}
-                            </span>
-                            <button
-                              onClick={() =>
-                                updateQuantity(item.name, item.quantity + 1)
-                              }
-                              className="w-8 h-8 rounded-full border border-border flex items-center justify-center hover:bg-muted transition-colors"
-                            >
-                              <Plus className="w-4 h-4 text-foreground" />
-                            </button>
-                          </div>
-                          <span className="text-accent font-bold">
-                            €{(item.price * item.quantity).toFixed(2).replace(".", ",")}
-                          </span>
-                        </div>
+                        <span className="text-accent font-bold">
+                          €{(item.price * item.quantity).toFixed(2).replace(".", ",")}
+                        </span>
                       </div>
                     </div>
-                  ))}
-                </div>
-
-                {/* Cart footer */}
-                <div className="mt-6 pt-4 border-t border-border">
-                  <div className="flex justify-between items-center mb-4">
-                    <span className="text-foreground font-semibold">
-                      {t.checkout.totalAmount} ({totalItems} {t.orderDelivery.items})
-                    </span>
-                    <span className="text-accent text-xl font-bold">
-                      €{totalPrice.toFixed(2).replace(".", ",")}
-                    </span>
                   </div>
-                  <Button
-                    className="w-full bg-accent hover:bg-accent/90 text-accent-foreground py-6 rounded-full font-semibold text-lg"
-                    onClick={handleProceedToCheckout}
-                  >
-                    {pageLabels.proceedToCheckout}
-                    <ChevronRight className="w-5 h-5 ml-2" />
-                  </Button>
-                </div>
-              </>
+                ))}
+              </div>
             )}
           </div>
         </div>
+
+        {/* Footer with checkout button */}
+        {cart.length > 0 && (
+          <DrawerFooter className="border-t border-border max-w-2xl mx-auto w-full">
+            <div className="flex justify-between items-center mb-2">
+              <span className="text-foreground font-semibold">
+                {t.checkout.totalAmount} ({totalItems} {t.orderDelivery.items})
+              </span>
+              <span className="text-accent text-xl font-bold">
+                €{totalPrice.toFixed(2).replace(".", ",")}
+              </span>
+            </div>
+            <Button
+              className="w-full bg-accent hover:bg-accent/90 text-accent-foreground py-6 rounded-full font-semibold text-lg"
+              onClick={handleProceedToCheckout}
+            >
+              {pageLabels.proceedToCheckout}
+              <ChevronRight className="w-5 h-5 ml-2" />
+            </Button>
+          </DrawerFooter>
+        )}
       </DrawerContent>
     </Drawer>
   );

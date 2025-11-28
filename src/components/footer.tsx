@@ -58,7 +58,7 @@ export function Footer() {
             <ul className="space-y-3">
               <li>
                 <Link
-                  href="#home"
+                  href="/"
                   className="text-slate-400 hover:text-primary transition-colors"
                 >
                   Home
@@ -66,7 +66,7 @@ export function Footer() {
               </li>
               <li>
                 <Link
-                  href="#menu"
+                  href="/menu"
                   className="text-slate-400 hover:text-primary transition-colors"
                 >
                   Our Menu
@@ -74,7 +74,7 @@ export function Footer() {
               </li>
               <li>
                 <Link
-                  href="#about"
+                  href="/over-ons"
                   className="text-slate-400 hover:text-primary transition-colors"
                 >
                   About Us
@@ -82,15 +82,7 @@ export function Footer() {
               </li>
               <li>
                 <Link
-                  href="#"
-                  className="text-slate-400 hover:text-primary transition-colors"
-                >
-                  Careers
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="#contact"
+                  href="/contact"
                   className="text-slate-400 hover:text-primary transition-colors"
                 >
                   Contact

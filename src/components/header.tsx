@@ -3,18 +3,34 @@
 import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 import { Menu, X, ShoppingCart } from "lucide-react";
 import { useCartStore } from "@/store/cart-store";
 import { useLanguageStore } from "@/store/language-store";
 import { CheckoutDrawer } from "@/components/checkout-drawer";
 import { LanguageToggle } from "@/components/language-toggle";
 
+const navItems = [
+  { href: "/", labelKey: "home" },
+  { href: "/menu", labelKey: "ourMenu" },
+  { href: "/over-ons", labelKey: "aboutUs" },
+  { href: "/contact", labelKey: "contact" },
+] as const;
+
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
   const { getTotalItems } = useCartStore();
   const { t } = useLanguageStore();
+  const pathname = usePathname();
   const totalItems = getTotalItems();
+
+  const isActive = (href: string) => {
+    if (href === "/") {
+      return pathname === "/";
+    }
+    return pathname.startsWith(href);
+  };
 
   return (
     <>
@@ -46,30 +62,19 @@ export function Header() {
 
             {/* Desktop Navigation - centered */}
             <nav className="hidden md:flex items-center gap-8 absolute left-1/2 -translate-x-1/2">
-              <Link
-                href="#home"
-                className="text-foreground hover:text-primary transition-colors text-sm font-medium"
-              >
-                {t.header.home}
-              </Link>
-              <Link
-                href="#menu"
-                className="text-foreground hover:text-primary transition-colors text-sm font-medium"
-              >
-                {t.header.ourMenu}
-              </Link>
-              <Link
-                href="#about"
-                className="text-foreground hover:text-primary transition-colors text-sm font-medium"
-              >
-                {t.header.aboutUs}
-              </Link>
-              <Link
-                href="#contact"
-                className="text-foreground hover:text-primary transition-colors text-sm font-medium"
-              >
-                {t.header.contact}
-              </Link>
+              {navItems.map((item) => (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className={`transition-colors text-sm font-medium ${
+                    isActive(item.href)
+                      ? "text-primary"
+                      : "text-foreground hover:text-primary"
+                  }`}
+                >
+                  {t.header[item.labelKey]}
+                </Link>
+              ))}
             </nav>
 
             {/* Right side - Language toggle and cart */}
@@ -95,34 +100,20 @@ export function Header() {
           {isMenuOpen && (
             <div className="md:hidden py-4 border-t border-border">
               <nav className="flex flex-col gap-4">
-                <Link
-                  href="#home"
-                  className="text-foreground hover:text-primary transition-colors text-sm font-medium"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  {t.header.home}
-                </Link>
-                <Link
-                  href="#menu"
-                  className="text-foreground hover:text-primary transition-colors text-sm font-medium"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  {t.header.ourMenu}
-                </Link>
-                <Link
-                  href="#about"
-                  className="text-foreground hover:text-primary transition-colors text-sm font-medium"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  {t.header.aboutUs}
-                </Link>
-                <Link
-                  href="#contact"
-                  className="text-foreground hover:text-primary transition-colors text-sm font-medium"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  {t.header.contact}
-                </Link>
+                {navItems.map((item) => (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    className={`transition-colors text-sm font-medium ${
+                      isActive(item.href)
+                        ? "text-primary"
+                        : "text-foreground hover:text-primary"
+                    }`}
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    {t.header[item.labelKey]}
+                  </Link>
+                ))}
                 <div className="pt-2">
                   <LanguageToggle />
                 </div>

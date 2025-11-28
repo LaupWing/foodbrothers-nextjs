@@ -16,49 +16,18 @@ import {
   ShoppingBag,
 } from "lucide-react";
 import { useCartStore } from "@/store/cart-store";
+import { useCheckoutStore } from "@/store/checkout-store";
 import { useLanguageStore } from "@/store/language-store";
 import Link from "next/link";
 
-type ShippingMethod = "delivery" | "pickup";
-
-interface FormData {
-  postalCode: string;
-  houseNumber: string;
-  streetName: string;
-  city: string;
-  name: string;
-  phone: string;
-  email: string;
-  companyName: string;
-  orderNote: string;
-  deliveryTime: string;
-  paymentMethod: string;
-  discountCode: string;
-}
-
 export default function CheckoutPage() {
   const router = useRouter();
-  const [shippingMethod, setShippingMethod] =
-    useState<ShippingMethod>("delivery");
   const [expandedSection, setExpandedSection] = useState<string | null>(
     "address"
   );
-  const [formData, setFormData] = useState<FormData>({
-    postalCode: "",
-    houseNumber: "",
-    streetName: "",
-    city: "",
-    name: "",
-    phone: "",
-    email: "",
-    companyName: "",
-    orderNote: "",
-    deliveryTime: "",
-    paymentMethod: "ideal",
-    discountCode: "",
-  });
 
   const { cart, getTotalPrice, getTotalItems } = useCartStore();
+  const { formData, updateFormData, setShippingMethod } = useCheckoutStore();
   const { t, language } = useLanguageStore();
   const totalPrice = getTotalPrice();
   const totalItems = getTotalItems();
@@ -67,7 +36,7 @@ export default function CheckoutPage() {
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    updateFormData({ [name]: value });
   };
 
   const toggleSection = (section: string) => {
@@ -157,16 +126,16 @@ export default function CheckoutPage() {
           <button
             onClick={() => setShippingMethod("delivery")}
             className={`flex-1 flex items-center justify-center gap-3 py-4 rounded-xl border-2 transition-all duration-200 ${
-              shippingMethod === "delivery"
+              formData.shippingMethod === "delivery"
                 ? "border-primary bg-primary/10"
                 : "border-border bg-secondary hover:bg-muted"
             }`}
           >
             <Bike
-              className={`w-6 h-6 ${shippingMethod === "delivery" ? "text-primary" : "text-muted-foreground"}`}
+              className={`w-6 h-6 ${formData.shippingMethod === "delivery" ? "text-primary" : "text-muted-foreground"}`}
             />
             <span
-              className={`font-medium ${shippingMethod === "delivery" ? "text-primary" : "text-foreground"}`}
+              className={`font-medium ${formData.shippingMethod === "delivery" ? "text-primary" : "text-foreground"}`}
             >
               {t.checkout.delivery}
             </span>
@@ -174,16 +143,16 @@ export default function CheckoutPage() {
           <button
             onClick={() => setShippingMethod("pickup")}
             className={`flex-1 flex items-center justify-center gap-3 py-4 rounded-xl border-2 transition-all duration-200 ${
-              shippingMethod === "pickup"
+              formData.shippingMethod === "pickup"
                 ? "border-primary bg-primary/10"
                 : "border-border bg-secondary hover:bg-muted"
             }`}
           >
             <Store
-              className={`w-6 h-6 ${shippingMethod === "pickup" ? "text-primary" : "text-muted-foreground"}`}
+              className={`w-6 h-6 ${formData.shippingMethod === "pickup" ? "text-primary" : "text-muted-foreground"}`}
             />
             <span
-              className={`font-medium ${shippingMethod === "pickup" ? "text-primary" : "text-foreground"}`}
+              className={`font-medium ${formData.shippingMethod === "pickup" ? "text-primary" : "text-foreground"}`}
             >
               {t.checkout.pickup}
             </span>
@@ -191,7 +160,7 @@ export default function CheckoutPage() {
         </div>
 
         {/* Address Section */}
-        {shippingMethod === "delivery" && (
+        {formData.shippingMethod === "delivery" && (
           <div className="mb-4 bg-secondary rounded-xl overflow-hidden">
             <button
               onClick={() => toggleSection("address")}

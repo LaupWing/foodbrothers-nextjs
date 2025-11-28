@@ -1,6 +1,14 @@
-import Link from "next/link"
-import Image from "next/image"
-import { Facebook, Instagram, Twitter, MapPin, Phone, Mail, Clock } from "lucide-react"
+import Link from "next/link";
+import Image from "next/image";
+import {
+  Facebook,
+  Instagram,
+  Twitter,
+  MapPin,
+  Phone,
+  Mail,
+  Clock,
+} from "lucide-react";
 
 export function Footer() {
   return (
@@ -11,15 +19,16 @@ export function Footer() {
           <div>
             <Link href="/" className="flex items-center mb-6">
               <Image
-                src="/images/image.png"
+                src="/logo.png"
                 alt="Food Brothers"
-                width={140}
-                height={45}
-                className="h-10 w-auto brightness-110"
+                width={280}
+                height={90}
+                className="h-20 w-auto brightness-110"
               />
             </Link>
             <p className="text-slate-400 mb-6">
-              Serving delicious handcrafted food since 2010. Made with love and premium ingredients.
+              Serving delicious handcrafted food since 2010. Made with love and
+              premium ingredients.
             </p>
             <div className="flex gap-4">
               <a
@@ -48,27 +57,42 @@ export function Footer() {
             <h3 className="text-white font-bold text-lg mb-6">Quick Links</h3>
             <ul className="space-y-3">
               <li>
-                <Link href="#home" className="text-slate-400 hover:text-primary transition-colors">
+                <Link
+                  href="#home"
+                  className="text-slate-400 hover:text-primary transition-colors"
+                >
                   Home
                 </Link>
               </li>
               <li>
-                <Link href="#menu" className="text-slate-400 hover:text-primary transition-colors">
+                <Link
+                  href="#menu"
+                  className="text-slate-400 hover:text-primary transition-colors"
+                >
                   Our Menu
                 </Link>
               </li>
               <li>
-                <Link href="#about" className="text-slate-400 hover:text-primary transition-colors">
+                <Link
+                  href="#about"
+                  className="text-slate-400 hover:text-primary transition-colors"
+                >
                   About Us
                 </Link>
               </li>
               <li>
-                <Link href="#" className="text-slate-400 hover:text-primary transition-colors">
+                <Link
+                  href="#"
+                  className="text-slate-400 hover:text-primary transition-colors"
+                >
                   Careers
                 </Link>
               </li>
               <li>
-                <Link href="#contact" className="text-slate-400 hover:text-primary transition-colors">
+                <Link
+                  href="#contact"
+                  className="text-slate-400 hover:text-primary transition-colors"
+                >
                   Contact
                 </Link>
               </li>
@@ -130,12 +154,20 @@ export function Footer() {
         {/* Bottom Bar */}
         <div className="border-t border-slate-800 pt-8">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-            <p className="text-slate-400 text-sm">© 2025 Food Brothers. All rights reserved.</p>
+            <p className="text-slate-400 text-sm">
+              © 2025 Food Brothers. All rights reserved.
+            </p>
             <div className="flex gap-6">
-              <Link href="#" className="text-slate-400 hover:text-primary text-sm transition-colors">
+              <Link
+                href="#"
+                className="text-slate-400 hover:text-primary text-sm transition-colors"
+              >
                 Privacy Policy
               </Link>
-              <Link href="#" className="text-slate-400 hover:text-primary text-sm transition-colors">
+              <Link
+                href="#"
+                className="text-slate-400 hover:text-primary text-sm transition-colors"
+              >
                 Terms of Service
               </Link>
             </div>
@@ -143,5 +175,5 @@ export function Footer() {
         </div>
       </div>
     </footer>
-  )
+  );
 }

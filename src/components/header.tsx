@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
@@ -24,6 +24,24 @@ export function Header() {
   const { t } = useLanguageStore();
   const pathname = usePathname();
   const totalItems = getTotalItems();
+  const headerRef = useRef<HTMLElement>(null);
+
+  // Close menu when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (headerRef.current && !headerRef.current.contains(event.target as Node)) {
+        setIsMenuOpen(false);
+      }
+    };
+
+    if (isMenuOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isMenuOpen]);
 
   const isActive = (href: string) => {
     if (href === "/") {
@@ -34,7 +52,7 @@ export function Header() {
 
   return (
     <>
-      <header className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-sm border-b border-border shadow-sm">
+      <header ref={headerRef} className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-sm border-b border-border shadow-sm">
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between h-20 md:h-24">
             {/* Mobile: Menu button on left */}
@@ -114,7 +132,7 @@ export function Header() {
                     {t.header[item.labelKey]}
                   </Link>
                 ))}
-                <div className="pt-2">
+                <div className="pt-2 flex">
                   <LanguageToggle />
                 </div>
               </nav>

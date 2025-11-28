@@ -33,14 +33,13 @@ export function HeroSection() {
                 <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
               </svg>
               <div className="flex items-center gap-1">
-                <span className="font-bold text-foreground">4.5</span>
+                <span className="font-bold text-foreground">4,8</span>
                 <div className="flex">
-                  {[1, 2, 3, 4].map((i) => (
-                    <Star key={i} className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+                  {[1, 2, 3, 4, 5].map((i) => (
+                    <Star key={i} className={`w-4 h-4 ${i <= 4 ? "fill-yellow-400" : "fill-yellow-400/80"} text-yellow-400`} />
                   ))}
-                  <Star className="w-4 h-4 fill-yellow-400/50 text-yellow-400" />
                 </div>
-                <span className="text-muted-foreground text-sm">(120+ reviews)</span>
+                <span className="text-muted-foreground text-sm">(1.522 reviews)</span>
               </div>
             </a>
             <p className="text-primary font-medium tracking-wide text-sm mb-4">Welcome to Food Brothers</p>

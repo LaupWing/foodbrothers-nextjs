@@ -1,10 +1,10 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { Button } from "@/components/ui/button"
-import { Plus, Minus, Search } from "lucide-react"
-import { DietaryIcons, type DietaryType } from "@/components/dietary-icons"
-import { ProductModal } from "@/components/product-modal"
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Plus, Minus, Search } from "lucide-react";
+import { DietaryIcons, type DietaryType } from "@/components/dietary-icons";
+import { ProductModal } from "@/components/product-modal";
 
 const menuCategories = [
   { id: "grill-beef", name: "Grill Beef Burgers" },
@@ -20,33 +20,53 @@ const menuCategories = [
   { id: "cold-drinks", name: "Cold Drinks" },
   { id: "warm-drinks", name: "Warm Drinks" },
   { id: "sauces", name: "Sauces" },
-]
+];
 
 const menuItems: Record<
   string,
   Array<{
-    name: string
-    description: string
-    price: number
-    dietary: DietaryType[]
-    hasCustomization: boolean
-    image?: string
+    name: string;
+    description: string;
+    price: number;
+    dietary: DietaryType[];
+    hasCustomization: boolean;
+    image?: string;
   }>
 > = {
   "grill-beef": [
     {
       name: "Traditional Grill Beef",
-      description: "160 grams of grilled beef, lettuce, beef tomato, hand-cut pickle and Dutch burger sauce",
+      description:
+        "160 grams of grilled beef, lettuce, beef tomato, hand-cut pickle and Dutch burger sauce",
       price: 12.5,
-      dietary: ["halal", "egg", "gluten", "mustard", "celery", "sesame", "soy", "milk"],
+      dietary: [
+        "halal",
+        "egg",
+        "gluten",
+        "mustard",
+        "celery",
+        "sesame",
+        "soy",
+        "milk",
+      ],
       hasCustomization: true,
       image: "/beef-burger.png",
     },
     {
       name: "Traditional Grill Beef Cheese",
-      description: "160 grams grilled beef, lettuce, beef tomato, red cheddar, hand-cut pickle and Dutch burger sauce",
+      description:
+        "160 grams grilled beef, lettuce, beef tomato, red cheddar, hand-cut pickle and Dutch burger sauce",
       price: 13.5,
-      dietary: ["halal", "egg", "gluten", "milk", "mustard", "celery", "sesame", "soy"],
+      dietary: [
+        "halal",
+        "egg",
+        "gluten",
+        "milk",
+        "mustard",
+        "celery",
+        "sesame",
+        "soy",
+      ],
       hasCustomization: true,
       image: "/classic-cheeseburger.png",
     },
@@ -61,7 +81,8 @@ const menuItems: Record<
     },
     {
       name: "American Smoked BBQ Grill Beef",
-      description: "160 grams of grilled beef, lettuce, beef tomato, pickle and American Smoked BBQ sauce",
+      description:
+        "160 grams of grilled beef, lettuce, beef tomato, pickle and American Smoked BBQ sauce",
       price: 13.5,
       dietary: ["halal", "gluten", "mustard", "celery", "sesame", "soy"],
       hasCustomization: true,
@@ -69,15 +90,26 @@ const menuItems: Record<
     },
     {
       name: "Mexican Grill Beef",
-      description: "160 grams grilled beef, lettuce, beef tomato, nachos, red cheddar and Mexican Jalapeño mayonnaise",
+      description:
+        "160 grams grilled beef, lettuce, beef tomato, nachos, red cheddar and Mexican Jalapeño mayonnaise",
       price: 13.5,
-      dietary: ["halal", "egg", "gluten", "milk", "mustard", "celery", "sesame", "soy"],
+      dietary: [
+        "halal",
+        "egg",
+        "gluten",
+        "milk",
+        "mustard",
+        "celery",
+        "sesame",
+        "soy",
+      ],
       hasCustomization: true,
       image: "/mexican-burger.jpg",
     },
     {
       name: "Hot Java Grill Beef",
-      description: "160 grams of grilled beef, lettuce, beef tomato, hand-cut pickle and spicy Indo sauce",
+      description:
+        "160 grams of grilled beef, lettuce, beef tomato, hand-cut pickle and spicy Indo sauce",
       price: 13.5,
       dietary: ["halal", "gluten", "mustard", "celery", "soy"],
       hasCustomization: true,
@@ -85,7 +117,8 @@ const menuItems: Record<
     },
     {
       name: "Black Truffle Grill Beef",
-      description: "160 grams grilled beef, lettuce, beef tomato, hand-cut pickle and Italian Black truffle mayonnaise",
+      description:
+        "160 grams grilled beef, lettuce, beef tomato, hand-cut pickle and Italian Black truffle mayonnaise",
       price: 15.0,
       dietary: ["halal", "gluten", "celery", "sesame", "soy"],
       hasCustomization: true,
@@ -104,7 +137,8 @@ const menuItems: Record<
   "grill-chicken": [
     {
       name: "Traditional Grill Chicken",
-      description: "160 grams of grilled chicken, lettuce, beef tomato, hand-cut pickle and homemade sauce",
+      description:
+        "160 grams of grilled chicken, lettuce, beef tomato, hand-cut pickle and homemade sauce",
       price: 12.5,
       dietary: ["halal", "gluten", "mustard", "celery", "sesame", "soy"],
       hasCustomization: true,
@@ -112,9 +146,18 @@ const menuItems: Record<
     },
     {
       name: "Traditional Grill Chicken Cheese",
-      description: "160 grams grilled chicken, lettuce, beef tomato, red cheddar, hand-cut pickle and homemade sauce",
+      description:
+        "160 grams grilled chicken, lettuce, beef tomato, red cheddar, hand-cut pickle and homemade sauce",
       price: 13.5,
-      dietary: ["halal", "gluten", "milk", "mustard", "celery", "sesame", "soy"],
+      dietary: [
+        "halal",
+        "gluten",
+        "milk",
+        "mustard",
+        "celery",
+        "sesame",
+        "soy",
+      ],
       hasCustomization: true,
       image: "/chicken-cheese-burger.jpg",
     },
@@ -129,7 +172,8 @@ const menuItems: Record<
     },
     {
       name: "American Smoked BBQ Grill Chicken",
-      description: "160 grams of grilled chicken, lettuce, beef tomato, hand-cut pickle and American smoked BBQ sauce",
+      description:
+        "160 grams of grilled chicken, lettuce, beef tomato, hand-cut pickle and American smoked BBQ sauce",
       price: 13.5,
       dietary: ["halal", "gluten", "mustard", "celery", "sesame", "soy"],
       hasCustomization: true,
@@ -140,13 +184,22 @@ const menuItems: Record<
       description:
         "160 grams grilled chicken, lettuce, beef tomato, nachos, red cheddar and Mexican jalapeño mayonnaise",
       price: 13.5,
-      dietary: ["halal", "egg", "gluten", "milk", "mustard", "celery", "sesame"],
+      dietary: [
+        "halal",
+        "egg",
+        "gluten",
+        "milk",
+        "mustard",
+        "celery",
+        "sesame",
+      ],
       hasCustomization: true,
       image: "/mexican-chicken-burger.jpg",
     },
     {
       name: "Hot Java Grill Chicken",
-      description: "160 grams of grilled chicken, lettuce, beef tomato, hand-cut pickle and hot spicy Indo sauce",
+      description:
+        "160 grams of grilled chicken, lettuce, beef tomato, hand-cut pickle and hot spicy Indo sauce",
       price: 13.5,
       dietary: ["halal", "gluten", "mustard", "celery", "sesame", "soy"],
       hasCustomization: true,
@@ -157,7 +210,16 @@ const menuItems: Record<
       description:
         "160 grams grilled chicken, lettuce, beef tomato, hand-cut pickle and Italian black truffle mayonnaise",
       price: 15.0,
-      dietary: ["halal", "egg", "gluten", "milk", "mustard", "celery", "sesame", "soy"],
+      dietary: [
+        "halal",
+        "egg",
+        "gluten",
+        "milk",
+        "mustard",
+        "celery",
+        "sesame",
+        "soy",
+      ],
       hasCustomization: true,
       image: "/truffle-chicken-burger.jpg",
     },
@@ -168,7 +230,16 @@ const menuItems: Record<
       description:
         "2 x 160 grams grilled beef, lettuce, beef tomato, red cheddar, hand-cut pickle, veal bacon and Dutch burger sauce",
       price: 26.0,
-      dietary: ["halal", "egg", "gluten", "milk", "mustard", "celery", "sesame", "soy"],
+      dietary: [
+        "halal",
+        "egg",
+        "gluten",
+        "milk",
+        "mustard",
+        "celery",
+        "sesame",
+        "soy",
+      ],
       hasCustomization: true,
       image: "/double-dutch-burger.jpg",
     },
@@ -177,7 +248,16 @@ const menuItems: Record<
       description:
         "2 x 160 grams grilled beef, lettuce, beef tomato, red cheddar, hand-cut pickle, veal bacon and Moroccan harissa mayonnaise",
       price: 26.0,
-      dietary: ["halal", "egg", "gluten", "milk", "mustard", "celery", "sesame", "soy"],
+      dietary: [
+        "halal",
+        "egg",
+        "gluten",
+        "milk",
+        "mustard",
+        "celery",
+        "sesame",
+        "soy",
+      ],
       hasCustomization: true,
       image: "/double-moroccan-burger.jpg",
     },
@@ -186,7 +266,16 @@ const menuItems: Record<
       description:
         "2 x 160 grams grilled beef, lettuce, beef tomato, red cheddar, hand-cut pickle, veal bacon and spicy Indo sauce",
       price: 26.0,
-      dietary: ["halal", "egg", "gluten", "milk", "mustard", "celery", "sesame", "soy"],
+      dietary: [
+        "halal",
+        "egg",
+        "gluten",
+        "milk",
+        "mustard",
+        "celery",
+        "sesame",
+        "soy",
+      ],
       hasCustomization: true,
       image: "/double-indonesian-burger.jpg",
     },
@@ -195,7 +284,15 @@ const menuItems: Record<
       description:
         "2 x 160 grams grilled beef, lettuce, beef tomato, red cheddar, hand-cut pickle, veal bacon and Mexican jalapeño mayonnaise",
       price: 26.0,
-      dietary: ["halal", "egg", "gluten", "milk", "mustard", "celery", "sesame"],
+      dietary: [
+        "halal",
+        "egg",
+        "gluten",
+        "milk",
+        "mustard",
+        "celery",
+        "sesame",
+      ],
       hasCustomization: true,
       image: "/double-mexican-burger.jpg",
     },
@@ -204,7 +301,15 @@ const menuItems: Record<
       description:
         "2 x 160 grams grilled beef, lettuce, beef tomato, red cheddar, hand-cut pickle, veal bacon and American smoked BBQ sauce",
       price: 26.0,
-      dietary: ["halal", "egg", "gluten", "milk", "mustard", "celery", "sesame"],
+      dietary: [
+        "halal",
+        "egg",
+        "gluten",
+        "milk",
+        "mustard",
+        "celery",
+        "sesame",
+      ],
       hasCustomization: true,
       image: "/double-american-burger.jpg",
     },
@@ -213,7 +318,15 @@ const menuItems: Record<
       description:
         "2 x 160 grams grilled beef, lettuce, beef tomato, red cheddar, hand-cut pickle, veal bacon and Italian Black Truffle mayonnaise",
       price: 26.0,
-      dietary: ["halal", "egg", "gluten", "milk", "mustard", "celery", "sesame"],
+      dietary: [
+        "halal",
+        "egg",
+        "gluten",
+        "milk",
+        "mustard",
+        "celery",
+        "sesame",
+      ],
       hasCustomization: true,
       image: "/double-italian-burger.jpg",
     },
@@ -277,7 +390,8 @@ const menuItems: Record<
   vega: [
     {
       name: "Vega Burger Classic",
-      description: "Plant-based patty with fresh lettuce, tomato, pickle and vegan mayo",
+      description:
+        "Plant-based patty with fresh lettuce, tomato, pickle and vegan mayo",
       price: 12.5,
       dietary: ["halal", "gluten", "soy"],
       hasCustomization: true,
@@ -285,7 +399,8 @@ const menuItems: Record<
     },
     {
       name: "Vega Burger Cheese",
-      description: "Plant-based patty with vegan cheese, lettuce, tomato and special sauce",
+      description:
+        "Plant-based patty with vegan cheese, lettuce, tomato and special sauce",
       price: 13.5,
       dietary: ["halal", "gluten", "soy"],
       hasCustomization: true,
@@ -295,7 +410,8 @@ const menuItems: Record<
   "fried-chicken": [
     {
       name: "Fried Chicken Filet Burger",
-      description: "Crispy fried chicken filet with lettuce, tomato and signature sauce",
+      description:
+        "Crispy fried chicken filet with lettuce, tomato and signature sauce",
       price: 12.5,
       dietary: ["halal", "egg", "gluten"],
       hasCustomization: true,
@@ -303,7 +419,8 @@ const menuItems: Record<
     },
     {
       name: "Fried Chicken Filet Cheese",
-      description: "Crispy fried chicken filet with red cheddar, lettuce and special mayo",
+      description:
+        "Crispy fried chicken filet with red cheddar, lettuce and special mayo",
       price: 13.5,
       dietary: ["halal", "egg", "gluten", "milk"],
       hasCustomization: true,
@@ -313,7 +430,8 @@ const menuItems: Record<
   fries: [
     {
       name: "Verse Boerenfriet met Schil",
-      description: "Farmer's fries fresh from the field, cut and prepared according to traditional methods",
+      description:
+        "Farmer's fries fresh from the field, cut and prepared according to traditional methods",
       price: 5.5,
       dietary: ["halal"],
       hasCustomization: false,
@@ -404,7 +522,8 @@ const menuItems: Record<
     },
     {
       name: "Kipcorn",
-      description: "The Kipkorn is made from tender chicken meat wrapped in a crispy coating",
+      description:
+        "The Kipkorn is made from tender chicken meat wrapped in a crispy coating",
       price: 3.75,
       dietary: ["halal", "gluten"],
       hasCustomization: false,
@@ -440,7 +559,8 @@ const menuItems: Record<
   "cold-drinks": [
     {
       name: "Uludağ Gazoz Orange",
-      description: "The cooling, flavorful orange taste of the Legendary Uludağ Gazoz Orange",
+      description:
+        "The cooling, flavorful orange taste of the Legendary Uludağ Gazoz Orange",
       price: 3.5,
       dietary: ["halal"],
       hasCustomization: false,
@@ -579,80 +699,97 @@ const menuItems: Record<
       image: "/indo-sauce.jpg",
     },
   ],
-}
+};
 
 interface CartItem {
-  name: string
-  quantity: number
-  price: number
-  toppings?: { name: string; price: number }[]
+  name: string;
+  quantity: number;
+  price: number;
+  toppings?: { name: string; price: number }[];
 }
 
 export function MenuSection() {
-  const [activeCategory, setActiveCategory] = useState("grill-beef")
-  const [cart, setCart] = useState<CartItem[]>([])
-  const [selectedProduct, setSelectedProduct] = useState<(typeof menuItems)["grill-beef"][0] | null>(null)
-  const [isModalOpen, setIsModalOpen] = useState(false)
-  const [searchQuery, setSearchQuery] = useState("")
+  const [activeCategory, setActiveCategory] = useState("grill-beef");
+  const [cart, setCart] = useState<CartItem[]>([]);
+  const [selectedProduct, setSelectedProduct] = useState<
+    (typeof menuItems)["grill-beef"][0] | null
+  >(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
 
   const addToCart = (item: {
-    name: string
-    price: number
-    quantity?: number
-    toppings?: { name: string; price: number }[]
+    name: string;
+    price: number;
+    quantity?: number;
+    toppings?: { name: string; price: number }[];
   }) => {
     setCart((prev) => {
       const existing = prev.find(
-        (i) => i.name === item.name && JSON.stringify(i.toppings) === JSON.stringify(item.toppings),
-      )
+        (i) =>
+          i.name === item.name &&
+          JSON.stringify(i.toppings) === JSON.stringify(item.toppings)
+      );
       if (existing) {
         return prev.map((i) =>
-          i.name === item.name && JSON.stringify(i.toppings) === JSON.stringify(item.toppings)
+          i.name === item.name &&
+          JSON.stringify(i.toppings) === JSON.stringify(item.toppings)
             ? { ...i, quantity: i.quantity + (item.quantity || 1) }
-            : i,
-        )
+            : i
+        );
       }
-      return [...prev, { ...item, quantity: item.quantity || 1, toppings: item.toppings || [] }]
-    })
-  }
+      return [
+        ...prev,
+        {
+          ...item,
+          quantity: item.quantity || 1,
+          toppings: item.toppings || [],
+        },
+      ];
+    });
+  };
 
   const removeFromCart = (itemName: string) => {
     setCart((prev) => {
-      const existing = prev.find((i) => i.name === itemName)
+      const existing = prev.find((i) => i.name === itemName);
       if (existing && existing.quantity > 1) {
-        return prev.map((i) => (i.name === itemName ? { ...i, quantity: i.quantity - 1 } : i))
+        return prev.map((i) =>
+          i.name === itemName ? { ...i, quantity: i.quantity - 1 } : i
+        );
       }
-      return prev.filter((i) => i.name !== itemName)
-    })
-  }
+      return prev.filter((i) => i.name !== itemName);
+    });
+  };
 
   const getItemQuantity = (itemName: string) => {
-    return cart.filter((i) => i.name === itemName).reduce((sum, i) => sum + i.quantity, 0)
-  }
+    return cart
+      .filter((i) => i.name === itemName)
+      .reduce((sum, i) => sum + i.quantity, 0);
+  };
 
-  const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0)
+  const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
   const totalPrice = cart.reduce((sum, item) => {
-    const toppingsPrice = item.toppings?.reduce((t, topping) => t + topping.price, 0) || 0
-    return sum + (item.price + toppingsPrice) * item.quantity
-  }, 0)
+    const toppingsPrice =
+      item.toppings?.reduce((t, topping) => t + topping.price, 0) || 0;
+    return sum + (item.price + toppingsPrice) * item.quantity;
+  }, 0);
 
   const handleProductClick = (item: (typeof menuItems)["grill-beef"][0]) => {
     if (item.hasCustomization) {
-      setSelectedProduct(item)
-      setIsModalOpen(true)
+      setSelectedProduct(item);
+      setIsModalOpen(true);
     } else {
-      addToCart({ name: item.name, price: item.price })
+      addToCart({ name: item.name, price: item.price });
     }
-  }
+  };
 
   const handleAddFromModal = (product: {
-    name: string
-    price: number
-    quantity: number
-    toppings: { name: string; price: number }[]
+    name: string;
+    price: number;
+    quantity: number;
+    toppings: { name: string; price: number }[];
   }) => {
-    addToCart(product)
-  }
+    addToCart(product);
+  };
 
   // Filter items based on search
   const filteredItems = searchQuery
@@ -660,10 +797,10 @@ export function MenuSection() {
         items.filter(
           (item) =>
             item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            item.description.toLowerCase().includes(searchQuery.toLowerCase()),
-        ),
+            item.description.toLowerCase().includes(searchQuery.toLowerCase())
+        )
       )
-    : menuItems[activeCategory as keyof typeof menuItems]
+    : menuItems[activeCategory as keyof typeof menuItems];
 
   return (
     <section id="menu" className="py-20 bg-background">
@@ -672,10 +809,15 @@ export function MenuSection() {
           {/* Menu */}
           <div className="lg:col-span-2">
             <div className="mb-8">
-              <p className="text-muted-foreground tracking-wide text-sm mb-2">Make It Your Way</p>
-              <h2 className="text-4xl md:text-5xl font-serif text-primary">Our Menu</h2>
+              <p className="text-muted-foreground tracking-wide text-sm mb-2">
+                Make It Your Way
+              </p>
+              <h2 className="text-4xl md:text-5xl font-serif text-primary">
+                Our Menu
+              </h2>
               <p className="text-muted-foreground mt-2">
-                Al onze Black Angus, Beef en Chicken burgers zijn 100% procent halal en afkomstig uit bio vrije uitloop
+                Al onze Black Angus, Beef en Chicken burgers zijn 100% procent
+                halal en afkomstig uit bio vrije uitloop
               </p>
             </div>
 
@@ -692,15 +834,15 @@ export function MenuSection() {
             </div>
 
             {/* Category tabs - scrollable */}
-            <div className="mb-6 -mx-4 px-4">
+            <div className="mb-6 -mx-4 px-4 grid">
               <div className="overflow-x-auto pb-2 max-w-full">
                 <div className="flex gap-2 w-fit">
                   {menuCategories.map((category) => (
                     <button
                       key={category.id}
                       onClick={() => {
-                        setActiveCategory(category.id)
-                        setSearchQuery("")
+                        setActiveCategory(category.id);
+                        setSearchQuery("");
                       }}
                       className={`px-4 py-2 text-sm font-medium transition-colors rounded-full whitespace-nowrap ${
                         activeCategory === category.id && !searchQuery
@@ -718,12 +860,16 @@ export function MenuSection() {
             {/* Menu Items */}
             <div className="space-y-3">
               {filteredItems.map((item, index) => {
-                const quantity = getItemQuantity(item.name)
+                const quantity = getItemQuantity(item.name);
                 return (
                   <div
                     key={index}
                     onClick={() => handleProductClick(item)}
-                    className={`flex items-center gap-4 p-4 bg-secondary rounded-xl hover:bg-muted transition-colors ${item.hasCustomization ? "cursor-pointer" : "cursor-default"}`}
+                    className={`flex items-center gap-4 p-4 bg-secondary rounded-xl hover:bg-muted transition-colors ${
+                      item.hasCustomization
+                        ? "cursor-pointer"
+                        : "cursor-default"
+                    }`}
                   >
                     {item.image && (
                       <div className="flex-shrink-0">
@@ -736,16 +882,27 @@ export function MenuSection() {
                     )}
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 flex-wrap">
-                        <h3 className="text-foreground font-semibold">{item.name}</h3>
+                        <h3 className="text-foreground font-semibold">
+                          {item.name}
+                        </h3>
                         {item.hasCustomization && (
-                          <span className="text-xs text-primary bg-primary/10 px-2 py-0.5 rounded-full">Customize</span>
+                          <span className="text-xs text-primary bg-primary/10 px-2 py-0.5 rounded-full">
+                            Customize
+                          </span>
                         )}
                       </div>
-                      <p className="text-muted-foreground text-sm mb-2 line-clamp-2">{item.description}</p>
+                      <p className="text-muted-foreground text-sm mb-2 line-clamp-2">
+                        {item.description}
+                      </p>
                       <DietaryIcons items={item.dietary} size="sm" />
                     </div>
-                    <div className="flex flex-col items-end gap-2" onClick={(e) => e.stopPropagation()}>
-                      <span className="text-accent font-bold text-lg">€{item.price.toFixed(2).replace(".", ",")}</span>
+                    <div
+                      className="flex flex-col items-end gap-2"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      <span className="text-accent font-bold text-lg">
+                        €{item.price.toFixed(2).replace(".", ",")}
+                      </span>
                       {quantity > 0 ? (
                         <div className="flex items-center gap-2">
                           <button
@@ -754,12 +911,17 @@ export function MenuSection() {
                           >
                             <Minus className="w-4 h-4" />
                           </button>
-                          <span className="text-foreground font-bold w-6 text-center">{quantity}</span>
+                          <span className="text-foreground font-bold w-6 text-center">
+                            {quantity}
+                          </span>
                           <button
                             onClick={() =>
                               item.hasCustomization
                                 ? handleProductClick(item)
-                                : addToCart({ name: item.name, price: item.price })
+                                : addToCart({
+                                    name: item.name,
+                                    price: item.price,
+                                  })
                             }
                             className="w-8 h-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center hover:bg-primary/90"
                           >
@@ -771,7 +933,10 @@ export function MenuSection() {
                           onClick={() =>
                             item.hasCustomization
                               ? handleProductClick(item)
-                              : addToCart({ name: item.name, price: item.price })
+                              : addToCart({
+                                  name: item.name,
+                                  price: item.price,
+                                })
                           }
                           size="sm"
                           className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-full"
@@ -781,7 +946,7 @@ export function MenuSection() {
                       )}
                     </div>
                   </div>
-                )
+                );
               })}
             </div>
           </div>
@@ -789,15 +954,25 @@ export function MenuSection() {
           {/* Order Delivery */}
           <div>
             <div className="bg-secondary rounded-2xl p-6 sticky top-24">
-              <h3 className="text-2xl font-serif text-primary mb-2">Order Delivery</h3>
-              <p className="text-muted-foreground mb-6">Fast delivery to your doorstep</p>
+              <h3 className="text-2xl font-serif text-primary mb-2">
+                Order Delivery
+              </h3>
+              <p className="text-muted-foreground mb-6">
+                Fast delivery to your doorstep
+              </p>
 
               <div className="space-y-4 mb-6">
-                <img src="/placeholder.svg?height=200&width=300" alt="Delivery" className="w-full rounded-xl" />
+                <img
+                  src="/placeholder.svg?height=200&width=300"
+                  alt="Delivery"
+                  className="w-full rounded-xl"
+                />
 
                 {cart.length > 0 ? (
                   <div className="space-y-2 max-h-64 overflow-y-auto">
-                    <h4 className="text-foreground font-semibold">Your Order:</h4>
+                    <h4 className="text-foreground font-semibold">
+                      Your Order:
+                    </h4>
                     {cart.map((item, index) => (
                       <div key={index} className="text-sm">
                         <div className="flex justify-between">
@@ -805,7 +980,10 @@ export function MenuSection() {
                             {item.quantity}x {item.name}
                           </span>
                           <span className="text-foreground">
-                            €{(item.price * item.quantity).toFixed(2).replace(".", ",")}
+                            €
+                            {(item.price * item.quantity)
+                              .toFixed(2)
+                              .replace(".", ",")}
                           </span>
                         </div>
                         {item.toppings && item.toppings.length > 0 && (
@@ -817,13 +995,19 @@ export function MenuSection() {
                     ))}
                     <div className="border-t border-border pt-2 mt-2">
                       <div className="flex justify-between font-bold">
-                        <span className="text-foreground">Total ({totalItems} items)</span>
-                        <span className="text-accent">€{totalPrice.toFixed(2).replace(".", ",")}</span>
+                        <span className="text-foreground">
+                          Total ({totalItems} items)
+                        </span>
+                        <span className="text-accent">
+                          €{totalPrice.toFixed(2).replace(".", ",")}
+                        </span>
                       </div>
                     </div>
                   </div>
                 ) : (
-                  <p className="text-muted-foreground text-center py-4">Your cart is empty</p>
+                  <p className="text-muted-foreground text-center py-4">
+                    Your cart is empty
+                  </p>
                 )}
               </div>
 
@@ -834,7 +1018,9 @@ export function MenuSection() {
                 Order Online
               </Button>
 
-              <p className="text-muted-foreground text-xs text-center mt-4">Free delivery on orders over €30</p>
+              <p className="text-muted-foreground text-xs text-center mt-4">
+                Free delivery on orders over €30
+              </p>
             </div>
           </div>
         </div>
@@ -844,13 +1030,13 @@ export function MenuSection() {
         <ProductModal
           isOpen={isModalOpen}
           onClose={() => {
-            setIsModalOpen(false)
-            setSelectedProduct(null)
+            setIsModalOpen(false);
+            setSelectedProduct(null);
           }}
           product={selectedProduct}
           onAddToCart={handleAddFromModal}
         />
       )}
     </section>
-  )
+  );
 }

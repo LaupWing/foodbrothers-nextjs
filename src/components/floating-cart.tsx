@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { usePathname } from "next/navigation";
 import { ShoppingCart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useCartStore } from "@/store/cart-store";
@@ -9,9 +10,15 @@ import { CheckoutDrawer } from "@/components/checkout-drawer";
 export function FloatingCart() {
   const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
   const { getTotalItems, getTotalPrice } = useCartStore();
+  const pathname = usePathname();
 
   const totalItems = getTotalItems();
   const totalPrice = getTotalPrice();
+
+  // Hide on checkout page
+  if (pathname === "/checkout") {
+    return null;
+  }
 
   return (
     <>

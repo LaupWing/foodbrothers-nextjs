@@ -106,7 +106,7 @@ export function CheckoutDrawer({ isOpen, onClose }: CheckoutDrawerProps) {
     <Drawer open={isOpen} onOpenChange={(open) => !open && onClose()}>
       <DrawerContent className="max-h-[95vh]">
         {/* Header */}
-        <DrawerHeader className="border-b border-border pb-4 max-w-md mx-auto w-full">
+        <DrawerHeader className="border-b border-border pb-4">
           <div className="flex items-center gap-3">
             <DrawerClose asChild>
               <button className="w-10 h-10 rounded-full bg-secondary flex items-center justify-center hover:bg-muted transition-colors">
@@ -121,7 +121,7 @@ export function CheckoutDrawer({ isOpen, onClose }: CheckoutDrawerProps) {
 
         {/* Scrollable content */}
         <div className="overflow-y-auto flex-1 px-4 py-4">
-          <div className="max-w-md mx-auto">
+          <div className="max-w-2xl mx-auto">
             {/* Shipping Method Toggle */}
             <div className="flex gap-2 mb-6">
               <button
@@ -555,7 +555,7 @@ export function CheckoutDrawer({ isOpen, onClose }: CheckoutDrawerProps) {
         </div>
 
         {/* Footer with total and order button */}
-        <DrawerFooter className="border-t border-border max-w-md mx-auto w-full">
+        <DrawerFooter className="border-t border-border max-w-2xl mx-auto w-full">
           <div className="flex justify-between items-center mb-2">
             <span className="text-foreground font-semibold">
               Totaal ({totalItems} items)

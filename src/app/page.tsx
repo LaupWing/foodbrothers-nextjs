@@ -4,7 +4,6 @@ import { BurgersSection } from "@/components/burgers-section";
 import { SauceSection } from "@/components/sauce-section";
 import { SaladSection } from "@/components/salad-section";
 import { MenuSection } from "@/components/menu-section";
-import { IceCreamSection } from "@/components/ice-cream-section";
 import { Footer } from "@/components/footer";
 
 export default function Home() {
@@ -16,7 +15,6 @@ export default function Home() {
       <SauceSection />
       <SaladSection />
       <MenuSection />
-      <IceCreamSection />
       <Footer />
     </main>
   );

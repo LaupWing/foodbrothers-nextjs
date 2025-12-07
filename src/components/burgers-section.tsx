@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import { DietaryIcons, type DietaryType } from "@/components/dietary-icons";
@@ -73,9 +74,11 @@ export function BurgersSection() {
             return (
               <div key={index} className="group text-center">
                 <div className="relative mb-6 overflow-hidden rounded-2xl bg-white/10 backdrop-blur-sm p-4">
-                  <img
+                  <Image
                     src={burger.image || "/placeholder.svg"}
                     alt={burger.name}
+                    width={400}
+                    height={400}
                     className="w-full aspect-square object-cover rounded-xl transform group-hover:scale-105 transition-transform duration-500"
                   />
                   <Button

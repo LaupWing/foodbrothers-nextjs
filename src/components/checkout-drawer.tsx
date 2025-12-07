@@ -1,6 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 import {
   Drawer,
   DrawerContent,
@@ -104,9 +105,11 @@ export function CheckoutDrawer({ isOpen, onClose }: CheckoutDrawerProps) {
                     className="bg-secondary rounded-xl p-4 flex gap-4"
                   >
                     <div className="relative shrink-0">
-                      <img
+                      <Image
                         src={item.image || "/placeholder.svg"}
                         alt={item.name}
+                        width={80}
+                        height={80}
                         className="w-20 h-20 object-cover rounded-lg"
                       />
                     </div>

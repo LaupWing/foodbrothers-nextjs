@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { useLanguageStore } from "@/store/language-store";
 
@@ -30,9 +31,12 @@ export function SaladSection() {
 
           {/* Image */}
           <div className="order-1 lg:order-2 relative">
-            <img
+            <Image
               src="/gourmet-burger-with-melted-cheese-bacon-and-fresh-.jpg"
               alt="Fresh Hamburger"
+              width={512}
+              height={384}
+              loading="lazy"
               className="w-full max-w-lg mx-auto rounded-2xl shadow-2xl"
             />
           </div>

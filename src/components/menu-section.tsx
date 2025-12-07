@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Plus, Search, ChevronLeft, ChevronRight } from "lucide-react";
 import { DietaryIcons, type DietaryType } from "@/components/dietary-icons";
@@ -235,9 +236,12 @@ export function MenuSection() {
                     <div className="flex flex-col sm:flex-row sm:items-center gap-4">
                       {item.image && (
                         <div className="shrink-0">
-                          <img
+                          <Image
                             src={item.image || "/placeholder.svg"}
                             alt={item.name}
+                            width={80}
+                            height={80}
+                            loading="lazy"
                             className="w-full h-32 sm:w-20 sm:h-20 object-cover rounded-lg"
                           />
                         </div>
@@ -310,9 +314,11 @@ export function MenuSection() {
                     {cart.map((item, index) => (
                       <div key={index} className="flex items-start gap-3">
                         <div className="relative shrink-0">
-                          <img
+                          <Image
                             src={item.image || "/placeholder.svg"}
                             alt={item.name}
+                            width={48}
+                            height={48}
                             className="w-12 h-12 object-cover rounded-lg"
                           />
                           <span className="absolute -top-1 -right-1 bg-primary text-primary-foreground text-xs font-bold w-5 h-5 rounded-full flex items-center justify-center">
@@ -351,9 +357,11 @@ export function MenuSection() {
                     </div>
                   </div>
                 ) : (
-                  <img
+                  <Image
                     src="https://images.unsplash.com/photo-1526367790999-0150786686a2?w=400&h=300&fit=crop"
                     alt="Delivery"
+                    width={400}
+                    height={300}
                     className="w-full rounded-xl"
                   />
                 )}

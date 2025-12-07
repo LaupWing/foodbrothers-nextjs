@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { useLanguageStore } from "@/store/language-store";
 
@@ -12,9 +13,12 @@ export function SauceSection() {
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           {/* Image */}
           <div className="relative">
-            <img
+            <Image
               src="/homemade-sauces.png"
               alt="Homemade Premium Sauces"
+              width={512}
+              height={512}
+              loading="lazy"
               className="w-full max-w-lg mx-auto rounded-2xl shadow-2xl"
             />
             <div className="absolute -bottom-6 -right-6 w-32 h-32 bg-primary rounded-full hidden lg:flex items-center justify-center shadow-lg">

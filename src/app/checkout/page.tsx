@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import {
   ArrowLeft,
@@ -522,9 +523,11 @@ export default function CheckoutPage() {
             {cart.map((item, index) => (
               <div key={index} className="flex items-start gap-3">
                 <div className="relative shrink-0">
-                  <img
+                  <Image
                     src={item.image || "/placeholder.svg"}
                     alt={item.name}
+                    width={40}
+                    height={40}
                     className="w-10 h-10 object-cover rounded-lg"
                   />
                   <span className="absolute -top-1 -right-1 bg-primary text-primary-foreground text-xs font-bold w-4 h-4 rounded-full flex items-center justify-center">

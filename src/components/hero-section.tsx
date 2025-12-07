@@ -1,5 +1,6 @@
 "use client"
 
+import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { ChevronRight, Star } from "lucide-react"
 import { useLanguageStore } from "@/store/language-store"
@@ -65,9 +66,12 @@ export function HeroSection() {
           <div className="relative flex justify-center">
             <div className="relative">
               <div className="absolute -inset-4 bg-gradient-to-r from-primary/20 to-accent/20 rounded-full blur-2xl" />
-              <img
+              <Image
                 src="/juicy-beef-burger-floating-with-ingredients-explod.jpg"
                 alt="Delicious Burger"
+                width={512}
+                height={512}
+                priority
                 className="relative w-full max-w-lg rounded-3xl shadow-2xl"
               />
             </div>

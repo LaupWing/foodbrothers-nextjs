@@ -33,20 +33,23 @@ export function Footer() {
               <a
                 href="#"
                 className="w-10 h-10 bg-slate-800 rounded-full flex items-center justify-center text-slate-300 hover:bg-primary hover:text-primary-foreground transition-colors"
+                aria-label="Facebook"
               >
-                <Facebook className="w-5 h-5" />
+                <Facebook className="w-5 h-5" aria-hidden="true" />
               </a>
               <a
                 href="#"
                 className="w-10 h-10 bg-slate-800 rounded-full flex items-center justify-center text-slate-300 hover:bg-primary hover:text-primary-foreground transition-colors"
+                aria-label="Instagram"
               >
-                <Instagram className="w-5 h-5" />
+                <Instagram className="w-5 h-5" aria-hidden="true" />
               </a>
               <a
                 href="#"
                 className="w-10 h-10 bg-slate-800 rounded-full flex items-center justify-center text-slate-300 hover:bg-primary hover:text-primary-foreground transition-colors"
+                aria-label="Twitter"
               >
-                <Twitter className="w-5 h-5" />
+                <Twitter className="w-5 h-5" aria-hidden="true" />
               </a>
             </div>
           </div>
@@ -118,7 +121,7 @@ export function Footer() {
             <h3 className="text-white font-bold text-lg mb-6">Opening Hours</h3>
             <ul className="space-y-2 text-sm">
               <li className="flex justify-between">
-                <span className="text-slate-500">Maandag</span>
+                <span className="text-slate-400">Maandag</span>
                 <span className="text-red-400">Gesloten</span>
               </li>
               <li className="flex justify-between">

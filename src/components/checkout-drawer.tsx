@@ -68,8 +68,11 @@ export function CheckoutDrawer({ isOpen, onClose }: CheckoutDrawerProps) {
               {pageLabels.yourOrder}
             </DrawerTitle>
             <DrawerClose asChild>
-              <button className="w-10 h-10 rounded-full bg-secondary flex items-center justify-center hover:bg-muted transition-colors">
-                <X className="w-5 h-5 text-foreground" />
+              <button
+                className="w-10 h-10 rounded-full bg-secondary flex items-center justify-center hover:bg-muted transition-colors"
+                aria-label="Close cart"
+              >
+                <X className="w-5 h-5 text-foreground" aria-hidden="true" />
               </button>
             </DrawerClose>
           </div>
@@ -122,8 +125,9 @@ export function CheckoutDrawer({ isOpen, onClose }: CheckoutDrawerProps) {
                         <button
                           onClick={() => removeFromCart(item.name)}
                           className="text-muted-foreground hover:text-destructive transition-colors p-1"
+                          aria-label={`Remove ${item.name} from cart`}
                         >
-                          <Trash2 className="w-4 h-4" />
+                          <Trash2 className="w-4 h-4" aria-hidden="true" />
                         </button>
                       </div>
                       <div className="flex justify-between items-center mt-3">
@@ -133,10 +137,11 @@ export function CheckoutDrawer({ isOpen, onClose }: CheckoutDrawerProps) {
                               updateQuantity(item.name, item.quantity - 1)
                             }
                             className="w-8 h-8 rounded-full border border-border flex items-center justify-center hover:bg-muted transition-colors"
+                            aria-label={`Decrease quantity of ${item.name}`}
                           >
-                            <Minus className="w-4 h-4 text-foreground" />
+                            <Minus className="w-4 h-4 text-foreground" aria-hidden="true" />
                           </button>
-                          <span className="w-8 text-center font-semibold text-foreground">
+                          <span className="w-8 text-center font-semibold text-foreground" aria-label={`Quantity: ${item.quantity}`}>
                             {item.quantity}
                           </span>
                           <button
@@ -144,8 +149,9 @@ export function CheckoutDrawer({ isOpen, onClose }: CheckoutDrawerProps) {
                               updateQuantity(item.name, item.quantity + 1)
                             }
                             className="w-8 h-8 rounded-full border border-border flex items-center justify-center hover:bg-muted transition-colors"
+                            aria-label={`Increase quantity of ${item.name}`}
                           >
-                            <Plus className="w-4 h-4 text-foreground" />
+                            <Plus className="w-4 h-4 text-foreground" aria-hidden="true" />
                           </button>
                         </div>
                         <span className="text-accent font-bold">

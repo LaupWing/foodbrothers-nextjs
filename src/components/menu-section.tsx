@@ -157,8 +157,9 @@ export function MenuSection() {
                 <button
                   onClick={() => scrollCategories("left")}
                   className="absolute left-0 top-1/2 -translate-y-1/2 z-10 w-8 h-8 bg-background/90 backdrop-blur-sm rounded-full shadow-md flex items-center justify-center hover:bg-muted transition-colors"
+                  aria-label="Scroll categories left"
                 >
-                  <ChevronLeft className="w-5 h-5 text-foreground" />
+                  <ChevronLeft className="w-5 h-5 text-foreground" aria-hidden="true" />
                 </button>
               )}
               <div
@@ -190,8 +191,9 @@ export function MenuSection() {
                 <button
                   onClick={() => scrollCategories("right")}
                   className="absolute right-0 top-1/2 -translate-y-1/2 z-10 w-8 h-8 bg-background/90 backdrop-blur-sm rounded-full shadow-md flex items-center justify-center hover:bg-muted transition-colors"
+                  aria-label="Scroll categories right"
                 >
-                  <ChevronRight className="w-5 h-5 text-foreground" />
+                  <ChevronRight className="w-5 h-5 text-foreground" aria-hidden="true" />
                 </button>
               )}
             </div>
@@ -219,11 +221,12 @@ export function MenuSection() {
                         onClick={() => handleProductClick(item)}
                         size="icon"
                         className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-full w-9 h-9 shadow-lg shadow-primary/30"
+                        aria-label={quantity > 0 ? `${item.name}, ${quantity} in cart` : `Add ${item.name} to cart`}
                       >
                         {quantity > 0 ? (
-                          <span className="font-bold text-sm">{quantity}</span>
+                          <span className="font-bold text-sm" aria-hidden="true">{quantity}</span>
                         ) : (
-                          <Plus className="w-5 h-5" />
+                          <Plus className="w-5 h-5" aria-hidden="true" />
                         )}
                       </Button>
                     </div>
@@ -272,11 +275,12 @@ export function MenuSection() {
                           onClick={() => handleProductClick(item)}
                           size="sm"
                           className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-full"
+                          aria-label={quantity > 0 ? `${item.name}, ${quantity} in cart` : `Add ${item.name} to cart`}
                         >
                           {quantity > 0 ? (
-                            <span className="font-bold text-sm">{quantity}</span>
+                            <span className="font-bold text-sm" aria-hidden="true">{quantity}</span>
                           ) : (
-                            <Plus className="w-4 h-4" />
+                            <Plus className="w-4 h-4" aria-hidden="true" />
                           )}
                         </Button>
                       </div>

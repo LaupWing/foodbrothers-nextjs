@@ -59,11 +59,13 @@ export function Header() {
             <button
               className="md:hidden text-foreground w-10"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
+              aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+              aria-expanded={isMenuOpen}
             >
               {isMenuOpen ? (
-                <X className="w-6 h-6" />
+                <X className="w-6 h-6" aria-hidden="true" />
               ) : (
-                <Menu className="w-6 h-6" />
+                <Menu className="w-6 h-6" aria-hidden="true" />
               )}
             </button>
 
@@ -103,10 +105,11 @@ export function Header() {
               <button
                 onClick={() => setIsCheckoutOpen(true)}
                 className="text-foreground hover:text-primary relative"
+                aria-label={`Shopping cart${totalItems > 0 ? `, ${totalItems} items` : ''}`}
               >
-                <ShoppingCart className="w-6 h-6 md:w-7 md:h-7" />
+                <ShoppingCart className="w-6 h-6 md:w-7 md:h-7" aria-hidden="true" />
                 {totalItems > 0 && (
-                  <span className="absolute -top-3 -right-3 w-5 h-5 bg-accent text-accent-foreground text-xs rounded-full flex items-center justify-center">
+                  <span className="absolute -top-3 -right-3 w-5 h-5 bg-accent text-accent-foreground text-xs rounded-full flex items-center justify-center" aria-hidden="true">
                     {totalItems}
                   </span>
                 )}

@@ -85,8 +85,9 @@ export function ProductModal({ isOpen, onClose, product, onAddToCart, onItemAdde
         <button
           onClick={onClose}
           className="absolute top-4 right-4 z-10 w-10 h-10 rounded-full bg-muted flex items-center justify-center hover:bg-muted/80 transition-colors"
+          aria-label="Close product details"
         >
-          <X className="w-5 h-5 text-foreground" />
+          <X className="w-5 h-5 text-foreground" aria-hidden="true" />
         </button>
 
         {/* Scrollable content */}
@@ -128,8 +129,10 @@ export function ProductModal({ isOpen, onClose, product, onAddToCart, onItemAdde
                             ? "bg-primary text-primary-foreground"
                             : "bg-muted text-muted-foreground hover:bg-muted/80"
                         }`}
+                        aria-label={isSelected ? `Remove ${topping.name}` : `Add ${topping.name}`}
+                        aria-pressed={isSelected}
                       >
-                        <Plus className={`w-4 h-4 ${isSelected ? "rotate-45" : ""} transition-transform`} />
+                        <Plus className={`w-4 h-4 ${isSelected ? "rotate-45" : ""} transition-transform`} aria-hidden="true" />
                       </button>
                     </div>
                   </div>
@@ -142,19 +145,21 @@ export function ProductModal({ isOpen, onClose, product, onAddToCart, onItemAdde
         {/* Fixed bottom bar */}
         <div className="sticky bottom-0 bg-background border-t border-border p-4 flex items-center justify-between gap-4">
           {/* Quantity selector */}
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2" role="group" aria-label="Quantity selector">
             <button
               onClick={() => setQuantity((q) => Math.max(1, q - 1))}
               className="w-10 h-10 rounded-full border-2 border-foreground flex items-center justify-center hover:bg-muted transition-colors"
+              aria-label="Decrease quantity"
             >
-              <Minus className="w-4 h-4 text-foreground" />
+              <Minus className="w-4 h-4 text-foreground" aria-hidden="true" />
             </button>
-            <span className="w-8 text-center font-semibold text-foreground">{quantity}</span>
+            <span className="w-8 text-center font-semibold text-foreground" aria-live="polite">{quantity}</span>
             <button
               onClick={() => setQuantity((q) => q + 1)}
               className="w-10 h-10 rounded-full border-2 border-foreground flex items-center justify-center hover:bg-muted transition-colors"
+              aria-label="Increase quantity"
             >
-              <Plus className="w-4 h-4 text-foreground" />
+              <Plus className="w-4 h-4 text-foreground" aria-hidden="true" />
             </button>
           </div>
 

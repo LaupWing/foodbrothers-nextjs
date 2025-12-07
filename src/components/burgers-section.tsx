@@ -82,11 +82,12 @@ export function BurgersSection() {
                     size="icon"
                     onClick={() => handleProductClick(burger)}
                     className="absolute top-6 right-6 bg-accent hover:bg-accent/90 text-accent-foreground rounded-full w-10 h-10 shadow-xl shadow-black/40"
+                    aria-label={quantity > 0 ? `${burger.name}, ${quantity} in cart` : `Add ${burger.name} to cart`}
                   >
                     {quantity > 0 ? (
-                      <span className="font-bold text-base">{quantity}</span>
+                      <span className="font-bold text-base" aria-hidden="true">{quantity}</span>
                     ) : (
-                      <Plus className="w-5 h-5" />
+                      <Plus className="w-5 h-5" aria-hidden="true" />
                     )}
                   </Button>
                 <div className="absolute bottom-6 left-6 bg-black/60 backdrop-blur-md px-4 py-2 rounded-full">
